@@ -7,16 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
 
 import type { Product } from '@prisma/client';
-
-type ListTypes = {
-  products: Product[];
-  title?: string;
-};
-
-type PriceTypes = {
-  value: number;
-  className?: string;
-};
+import type { ListTypes, PriceTypes } from '@/types';
 
 const ProductPrice = ({ value, className }: PriceTypes) => {
   const string = value.toFixed(2);

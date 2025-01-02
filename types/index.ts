@@ -1,14 +1,11 @@
-export type Product = {
-  name: string;
-  slug: string;
-  category: string;
-  description: string;
-  images: string[];
-  price: number;
-  brand: string;
-  rating: number;
-  numReviews: number;
-  stock: number;
-  isFeatured: boolean;
-  banner: null;
+import type { Product } from '@prisma/client';
+
+export type ListTypes = {
+  products: Product[];
+  title?: string;
+};
+
+export type PriceTypes = {
+  value: number;
+  className?: string;
 };
