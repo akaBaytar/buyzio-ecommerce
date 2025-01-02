@@ -22,6 +22,7 @@ const ModeToggle = () => {
     <Button
       variant='outline'
       size='icon'
+      title='Appearance'
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
       {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
     </Button>
