@@ -8,13 +8,15 @@ import {
   ShoppingCartIcon,
 } from 'lucide-react';
 
+import ModeToggle from '../shared/mode-toggle';
+
 import { Button } from '../ui/button';
 
 import { APP_NAME } from '@/constants';
 
 const Header = () => {
   return (
-    <header className='w-full border-b'>
+    <header className='w-full border-b border-input'>
       <div className='wrapper flex-between'>
         <div className='flex-start'>
           <Link href='/' title='Buyzio - Homepage' className='flex-start'>
@@ -30,7 +32,8 @@ const Header = () => {
             </span>
           </Link>
         </div>
-        <div className='space-x-2'>
+        <div className='flex items-center gap-2'>
+          <ModeToggle />
           <Button asChild variant='outline' size='icon' title='Sign in'>
             <Link href='/sign-in'>
               <UserIcon />

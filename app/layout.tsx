@@ -1,5 +1,7 @@
 import { Poppins } from 'next/font/google';
 
+import { ThemeProvider } from 'next-themes';
+
 import { APP_NAME } from '@/constants';
 
 import type { Metadata } from 'next';
@@ -24,8 +26,15 @@ export const metadata: Metadata = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang='en'>
-      <body className={`${poppins.className} antialiased`}>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body className={`${poppins.className} antialiased`}>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='light'
+          disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 };
