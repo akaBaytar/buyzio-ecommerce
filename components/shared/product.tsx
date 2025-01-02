@@ -6,12 +6,11 @@ import { StarIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
 
-import type { Product } from '@/types';
+import type { Product } from '@prisma/client';
 
 type ListTypes = {
-  data: Product[];
+  products: Product[];
   title?: string;
-  limit?: number;
 };
 
 type PriceTypes = {
@@ -53,7 +52,8 @@ const ProductCard = ({ product }: { product: Product }) => {
         </Link>
         <div className='flex-between gap-4'>
           <p className=' flex items-center gap-1 text-amber-500 text-sm font-semibold'>
-            {product.rating} <StarIcon className='size-4 mb-0.5 fill-amber-500'/>
+            {product.rating.toString()}
+            <StarIcon className='size-4 mb-0.5 fill-amber-500' />
           </p>
           {product.stock > 0 ? (
             <ProductPrice value={+product.price} />
@@ -66,9 +66,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   );
 };
 
-const ProductList = ({ data, title, limit }: ListTypes) => {
-  const products = limit ? data.slice(0, limit) : data;
-
+const ProductList = ({ products, title }: ListTypes) => {
   return (
     <div className='my-10'>
       <h2 className='h2-bold mb-4 text-center sm:text-start'>{title}</h2>

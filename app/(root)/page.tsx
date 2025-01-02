@@ -1,11 +1,13 @@
 import ProductList from '@/components/shared/product';
 
-import { mockData } from '@/mock';
+import { getLatestProducts } from '@/actions/product.action';
 
-const HomePage = () => {
+const HomePage = async () => {
+  const latestProducts = await getLatestProducts();
+
   return (
     <>
-      <ProductList data={mockData.products} title='Newest Arrivals' limit={4} />
+      <ProductList products={latestProducts} title='Newest Arrivals' />
     </>
   );
 };
