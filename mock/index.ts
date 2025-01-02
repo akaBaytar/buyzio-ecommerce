@@ -6,7 +6,7 @@ export const mockData = {
       category: "Woman's Coats",
       description:
         'A stylish analogue watch featuring a durable resin strap, perfect for any occasion.',
-      images: ['../images/1-1.png', '../images/1-2.png', '../images/1-3.png'],
+      images: ['/images/1-1.png', '/images/1-2.png', '/images/1-3.png'],
       price: 59.99,
       brand: 'Analogue',
       rating: 4.5,
@@ -21,8 +21,8 @@ export const mockData = {
       category: "Men's Shirts",
       description:
         'High-waist trousers designed for ultimate comfort and timeless style.',
-      images: ['../images/2-1.png', '../images/2-2.png', '../images/2-3.png'],
-      price: 85.9,
+      images: ['/images/2-1.png', '/images/2-2.png', '/images/2-3.png'],
+      price: 85.90,
       brand: 'Ridley',
       rating: 4.2,
       numReviews: 8,
@@ -36,7 +36,7 @@ export const mockData = {
       category: "Women's Dress",
       description:
         'A cozy and fashionable beanie, perfect for adding a pop of style to any outfit.',
-      images: ['../images/3-1.png', '../images/3-2.png', '../images/3-3.png'],
+      images: ['/images/3-1.png', '/images/3-2.png', '/images/3-3.png'],
       price: 99.95,
       brand: 'Blush',
       rating: 4.9,
@@ -51,7 +51,7 @@ export const mockData = {
       category: "Women's Dress",
       description:
         'Elegant toe-point shoes crafted for both style and comfort.',
-      images: ['../images/4-1.png', '../images/4-2.png', '../images/4-3.png'],
+      images: ['/images/4-1.png', '/images/4-2.png', '/images/4-3.png'],
       price: 39.95,
       brand: 'Mercury',
       rating: 3.6,
@@ -66,7 +66,7 @@ export const mockData = {
       category: "Men's Shirts",
       description:
         'Classic high-waist trousers that pair perfectly with any formal or casual attire.',
-      images: ['../images/5-1.png', '../images/5-2.png', '../images/5-3.png'],
+      images: ['/images/5-1.png', '/images/5-2.png', '/images/5-3.png'],
       price: 79.99,
       brand: 'High',
       rating: 4.7,
@@ -81,7 +81,7 @@ export const mockData = {
       category: "Men's Knitwears",
       description:
         'A premium knitwear piece blending Blush and Mercury styles for a unique look.',
-      images: ['../images/6-1.png', '../images/6-2.png', '../images/6-3.png'],
+      images: ['/images/6-1.png', '/images/6-2.png', '/images/6-3.png'],
       price: 99.99,
       brand: 'Blush',
       rating: 4.6,
@@ -96,7 +96,7 @@ export const mockData = {
       category: "Men's Shirts",
       description:
         'A warm and durable beanie, ideal for chilly days and rugged adventures.',
-      images: ['../images/7-1.png', '../images/7-2.png', '../images/7-3.png'],
+      images: ['/images/7-1.png', '/images/7-2.png', '/images/7-3.png'],
       price: 99.99,
       brand: 'Resin',
       rating: 4.6,
@@ -111,7 +111,7 @@ export const mockData = {
       category: "Women's Shirts",
       description:
         'Sophisticated footwear with Ridley’s signature design for the modern woman.',
-      images: ['../images/8-1.png', '../images/8-2.png', '../images/8-3.png'],
+      images: ['/images/8-1.png', '/images/8-2.png', '/images/8-3.png'],
       price: 99.99,
       brand: 'Ridley',
       rating: 4.6,
