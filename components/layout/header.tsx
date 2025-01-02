@@ -22,10 +22,11 @@ const Header = () => {
           <Link href='/' title='Buyzio - Homepage' className='flex-start'>
             <Image
               src='logo.svg'
-              alt={`${APP_NAME} Homepage`}
               width={48}
               height={48}
               priority={true}
+              alt={`${APP_NAME} Homepage`}
+              style={{ height: 'auto', width: 'auto' }}
             />
             <span className='hidden font-bold text-2xl tracking-wider ms-2 md:block'>
               {APP_NAME}
