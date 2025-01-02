@@ -26,14 +26,16 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className='w-full max-w-sm mx-auto border-input bg-muted'>
       <CardHeader className='p-0 items-center'>
-        <Link href={`/product/${product.slug}`} className='p-4 pb-0'>
+        <Link
+          href={`/product/${product.slug}`}
+          className='p-4 mt-4 bg-muted rounded-xl'>
           <Image
             src={product.images[0]}
             alt={product.name}
             width={300}
             height={300}
             priority={true}
-            className='block object-cover rounded-xl'
+            className='block object-cover rounded-xl bg-muted'
           />
         </Link>
       </CardHeader>
@@ -69,7 +71,7 @@ const ProductList = ({ products, title }: ListTypes) => {
           ))}
         </div>
       ) : (
-        <div className=''>
+        <div className='text-center sm:text-start'>
           <p>No products found.</p>
         </div>
       )}
