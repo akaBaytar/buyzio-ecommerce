@@ -1,4 +1,18 @@
 export const mockData = {
+  users: [
+    {
+      name: 'Admin User',
+      email: 'admin@mail.com',
+      password: '123456',
+      role: 'admin',
+    },
+    {
+      name: 'Test User',
+      email: 'test@mail.com',
+      password: '123456',
+      role: 'user',
+    },
+  ],
   products: [
     {
       name: 'Analogue Resin Strap',
@@ -22,7 +36,7 @@ export const mockData = {
       description:
         'High-waist trousers designed for ultimate comfort and timeless style.',
       images: ['/images/2-1.png', '/images/2-2.png', '/images/2-3.png'],
-      price: 85.90,
+      price: 85.9,
       brand: 'Ridley',
       rating: 4.2,
       numReviews: 8,
