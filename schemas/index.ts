@@ -14,3 +14,8 @@ export const AddProductSchema = z.object({
   banner: z.optional(z.string()),
   price: z.number(),
 });
+
+export const SignInFormSchema = z.object({
+  email: z.string().email('Invalid email address.'),
+  password: z.string().min(6, 'Password must be at least 6 characters.'),
+});
