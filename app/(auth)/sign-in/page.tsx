@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
+
+import { auth } from '@/auth';
 
 import {
   Card,
@@ -19,7 +22,11 @@ export const metadata: Metadata = {
   title: 'Sign In',
 };
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const session = await auth();
+
+  if (session) redirect('/');
+
   return (
     <div className='w-full max-w-md mx-auto'>
       <Card className='border-input'>

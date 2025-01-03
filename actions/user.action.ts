@@ -18,7 +18,7 @@ export const signInUser = async (_: unknown, formData: FormData) => {
   } catch (error) {
     if (isRedirectError(error)) throw error;
 
-    return { success: false, message: 'Invalid credentials.' };
+    return { success: false, message: 'Invalid email or password.' };
   }
 };
 

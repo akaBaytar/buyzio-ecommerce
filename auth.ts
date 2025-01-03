@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import CredentialProvider from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 import prisma from './database';
 import { compare } from './lib/encrypt';
@@ -21,7 +21,7 @@ export const config: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
 
   providers: [
-    CredentialProvider({
+    CredentialsProvider({
       credentials: {
         email: { type: 'email' },
         password: { type: 'password' },

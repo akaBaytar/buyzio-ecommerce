@@ -1,19 +1,26 @@
 const encoder = new TextEncoder();
-
-const salt = crypto.getRandomValues(new Uint8Array(16)).join('');
+const key = new TextEncoder().encode(process.env.ENCRYPTION_KEY);
 
 export const hash = async (password: string): Promise<string> => {
-  const passwordData = encoder.encode(password + salt);
+  const passwordData = encoder.encode(password);
 
-  const hashBuffer = await crypto.subtle.digest('SHA-256', passwordData);
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    key,
+    { name: 'HMAC', hash: { name: 'SHA-256' } },
+    false,
+    ['sign', 'verify']
+  );
 
+  const hashBuffer = await crypto.subtle.sign('HMAC', cryptoKey, passwordData);
+  
   return Array
     .from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 };
 
-export const compare = async (password: string,encrypted: string): Promise<boolean> => {
+export const compare = async (password: string, encrypted: string): Promise<boolean> => {
   const hashedPassword = await hash(password);
 
   return hashedPassword === encrypted;

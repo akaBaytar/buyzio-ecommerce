@@ -1,13 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-
 import { mockData } from '.';
+import prisma from '@/database';
 import { hash } from '@/lib/encrypt';
 
 const { products, users } = mockData;
 
 const seed = async () => {
-  const prisma = new PrismaClient();
-
   try {
     await prisma.product.deleteMany();
     await prisma.account.deleteMany();
