@@ -22,10 +22,16 @@ export const metadata: Metadata = {
   title: 'Sign In',
 };
 
-const SignInPage = async () => {
+type PageProps = {
+  searchParams: Promise<{ callbackUrl: string }>;
+};
+
+const SignInPage = async ({ searchParams }: PageProps) => {
+  const { callbackUrl } = await searchParams;
+
   const session = await auth();
 
-  if (session) redirect('/');
+  if (session) redirect(callbackUrl || '/');
 
   return (
     <div className='w-full max-w-md mx-auto'>

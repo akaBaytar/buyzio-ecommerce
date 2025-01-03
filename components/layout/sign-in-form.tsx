@@ -1,8 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
+
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { Loader2Icon } from 'lucide-react';
 
@@ -25,6 +27,9 @@ const SignInButton = () => {
 };
 
 const SignInForm = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
+
   const defaultState = {
     success: false,
     message: '',
@@ -71,6 +76,7 @@ const SignInForm = () => {
           </Link>
         </div>
       </div>
+      <input type='hidden' name='callbackUrl' value={callbackUrl} />
     </form>
   );
 };
