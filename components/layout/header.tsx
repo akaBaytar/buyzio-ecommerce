@@ -1,16 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import {
-  UserIcon,
-  HeartIcon,
-  SearchIcon,
-  ShoppingCartIcon,
-} from 'lucide-react';
-
-import ModeToggle from '../shared/mode-toggle';
+import { HeartIcon, SearchIcon, ShoppingCartIcon } from 'lucide-react';
 
 import { Button } from '../ui/button';
+
+import ModeToggle from '../shared/mode-toggle';
+import UserButton from '../shared/user-button';
 
 import { APP_NAME } from '@/constants';
 
@@ -35,11 +31,7 @@ const Header = () => {
         </div>
         <div className='flex items-center gap-2'>
           <ModeToggle />
-          <Button asChild variant='outline' size='icon' title='Sign in'>
-            <Link href='/sign-in'>
-              <UserIcon />
-            </Link>
-          </Button>
+          <UserButton />
           <Button
             asChild
             variant='outline'
