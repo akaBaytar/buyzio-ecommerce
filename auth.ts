@@ -6,6 +6,7 @@ import prisma from './database';
 import { compare } from './lib/encrypt';
 
 import type { NextAuthConfig } from 'next-auth';
+import type { User } from './types';
 
 export const config: NextAuthConfig = {
   pages: {
@@ -27,7 +28,7 @@ export const config: NextAuthConfig = {
         password: { type: 'password' },
       },
 
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         if (credentials === null) return null;
 
         const user = await prisma.user.findUnique({
@@ -46,7 +47,7 @@ export const config: NextAuthConfig = {
               name: user.name,
               email: user.email,
               role: user.role,
-            };
+            } as User;
           }
         }
 
@@ -56,12 +57,32 @@ export const config: NextAuthConfig = {
   ],
 
   callbacks: {
-    async session({ session, user, trigger, token }) {
-      session.user.id = token.sub as string;
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+          role: token.role,
+          name: token.name,
+        } as User,
+      };
+    },
 
-      if (trigger === 'update') session.user.name = user.name;
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as User).role;
+        token.name = user.name || user.email!.split('@')[0];
 
-      return session;
+        if (user.name === 'NO_NAME') {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { name: token.name },
+          });
+        }
+      }
+
+      return token;
     },
   },
 };
