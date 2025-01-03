@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import type { Product } from '@prisma/client';
 import type { ListTypes, PriceTypes } from '@/types';
 
-const ProductPrice = ({ value, className }: PriceTypes) => {
+export const ProductPrice = ({ value, className }: PriceTypes) => {
   const string = value.toFixed(2);
   const [int, float] = string.split('.');
 
