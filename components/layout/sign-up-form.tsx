@@ -14,22 +14,26 @@ import { Button } from '../ui/button';
 
 import { APP_NAME } from '@/constants';
 
-import { signInUser } from '@/actions/user.action';
+import { signUpUser } from '@/actions/user.action';
 
-const SignInButton = () => {
+const SignUpButton = () => {
   const { pending } = useFormStatus();
 
   return (
     <Button size='lg' disabled={pending} className='w-full'>
-      {pending ? <Loader2Icon className='size-4 animate-spin' /> : 'Sign In'}
+      {pending ? <Loader2Icon className='size-4 animate-spin' /> : 'Register'}
     </Button>
   );
 };
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const [passwordType, setPasswordType] = useState<'password' | 'text'>(
     'password'
   );
+
+  const [confirmPasswordType, setConfirmPasswordType] = useState<
+    'password' | 'text'
+  >('password');
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
@@ -39,11 +43,24 @@ const SignInForm = () => {
     message: '',
   };
 
-  const [data, action] = useActionState(signInUser, defaultState);
+  const [data, action] = useActionState(signUpUser, defaultState);
 
   return (
     <form action={action}>
       <div className='space-y-5'>
+        <div className='space-y-1.5'>
+          <Label htmlFor='name'>Name:</Label>
+          <Input
+            id='name'
+            name='name'
+            type='name'
+            autoComplete='name'
+            placeholder='Your full name'
+            defaultValue=''
+            required
+            className='p-2.5 text-sm transition-colors'
+          />
+        </div>
         <div className='space-y-1.5'>
           <Label htmlFor='email'>Email:</Label>
           <Input
@@ -82,14 +99,39 @@ const SignInForm = () => {
             />
           )}
         </div>
-        <SignInButton />
+        <div className='space-y-1.5 relative'>
+          <Label htmlFor='confirmPassword'>Confirm Password:</Label>
+          <Input
+            id='confirmPassword'
+            name='confirmPassword'
+            type={confirmPasswordType}
+            placeholder='Confirm your password'
+            defaultValue=''
+            required
+            className='p-2.5 text-sm transition-colors'
+          />
+          {confirmPasswordType === 'password' ? (
+            <EyeIcon
+              role='button'
+              onClick={() => setConfirmPasswordType('text')}
+              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
+            />
+          ) : (
+            <EyeClosedIcon
+              role='button'
+              onClick={() => setConfirmPasswordType('password')}
+              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
+            />
+          )}
+        </div>
+        <SignUpButton />
         {data && !data.success && (
           <p className='text-center text-xs text-rose-500'>{data.message}</p>
         )}
         <div className='text-center text-xs text-muted-foreground'>
-          Don&apos;t have a {APP_NAME} account?
-          <Link href='/sign-up' target='_self' className='ms-1 underline'>
-            Create a account
+          Already have a {APP_NAME} account?
+          <Link href='/sign-in' target='_self' className='ms-1 underline'>
+            Login here
           </Link>
         </div>
       </div>
@@ -98,4 +140,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

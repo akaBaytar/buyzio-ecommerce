@@ -56,9 +56,7 @@ const UserButton = async () => {
             </Button>
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align='start'
-          className='border-input py-2.5 px-5 mt-2 w-[168px]'>
+        <DropdownMenuContent align='end' className='border-input py-2.5 px-5 mt-2 w-58'>
           <DropdownMenuLabel className='font-normal'>
             <div className='flex flex-col gap-2.5'>
               <p className='text-sm leading-none line-clamp-1'>{fullName}</p>
@@ -67,8 +65,8 @@ const UserButton = async () => {
               </p>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuItem className='p-0 mb-1'>
-            <form action={signOutUser} className='w-full mt-2.5'>
+          <DropdownMenuItem className='p-0 mt-2.5'>
+            <form action={signOutUser} className='w-full'>
               <Button variant='outline' size='sm' className='w-full'>
                 Sign out
               </Button>
