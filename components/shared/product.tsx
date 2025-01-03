@@ -24,18 +24,18 @@ export const ProductPrice = ({ value, className }: PriceTypes) => {
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className='w-full max-w-sm mx-auto border-input bg-muted'>
+    <Card className='w-full max-w-sm mx-auto border-input bg-muted/20'>
       <CardHeader className='p-0 items-center'>
         <Link
           href={`/product/${product.slug}`}
-          className='p-4 mt-4 bg-muted rounded-xl'>
+          className='p-4 mt-4 rounded-xl'>
           <Image
             src={product.images[0]}
             alt={product.name}
             width={300}
             height={300}
             priority={true}
-            className='block object-cover rounded-xl bg-muted'
+            className='block object-cover rounded-xl'
           />
         </Link>
       </CardHeader>

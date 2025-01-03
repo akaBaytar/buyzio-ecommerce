@@ -86,17 +86,25 @@ const SignUpForm = () => {
             className='p-2.5 text-sm transition-colors'
           />
           {passwordType === 'password' ? (
-            <EyeIcon
-              role='button'
+            <Button
+              size='icon'
+              type='button'
+              variant='ghost'
+              title='Show password'
               onClick={() => setPasswordType('text')}
-              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
-            />
+              className='select-none size-5 absolute top-[50%] right-2 text-muted-foreground p-1'>
+              <EyeIcon />
+            </Button>
           ) : (
-            <EyeClosedIcon
-              role='button'
+            <Button
+              size='icon'
+              type='button'
+              variant='ghost'
+              title='Hide password'
               onClick={() => setPasswordType('password')}
-              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
-            />
+              className='select-none size-5 absolute top-[50%] right-2 text-muted-foreground p-1'>
+              <EyeClosedIcon />
+            </Button>
           )}
         </div>
         <div className='space-y-1.5 relative'>
@@ -111,17 +119,25 @@ const SignUpForm = () => {
             className='p-2.5 text-sm transition-colors'
           />
           {confirmPasswordType === 'password' ? (
-            <EyeIcon
-              role='button'
+            <Button
+              size='icon'
+              type='button'
+              variant='ghost'
+              title='Show password'
               onClick={() => setConfirmPasswordType('text')}
-              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
-            />
+              className='select-none size-5 p-1 absolute top-[50%] right-2 text-muted-foreground'>
+              <EyeIcon />
+            </Button>
           ) : (
-            <EyeClosedIcon
-              role='button'
+            <Button
+              size='icon'
+              type='button'
+              variant='ghost'
+              title='Hide password'
               onClick={() => setConfirmPasswordType('password')}
-              className='select-none size-4 absolute top-[50%] right-2 text-muted-foreground'
-            />
+              className='select-none size-5 p-1 absolute top-[50%] right-2 text-muted-foreground'>
+              <EyeClosedIcon />
+            </Button>
           )}
         </div>
         <SignUpButton />

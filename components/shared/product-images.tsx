@@ -15,7 +15,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
         alt='Product Image'
         width={1000}
         height={1000}
-        className='h-[34rem] object-contain border border-input bg-muted rounded-xl shadow'
+        className='h-[34rem] object-contain border border-input bg-muted/20 rounded-xl shadow'
       />
       <div className='flex-center gap-5 p-5 border border-input rounded-xl shadow'>
         {images.map((image, idx) => (
@@ -24,8 +24,8 @@ const ProductImages = ({ images }: { images: string[] }) => {
             role='button'
             onClick={() => setCurrent(idx)}
             className={cn(
-              'border border-input rounded-xl p-2.5 cursor-pointer hover:border-foreground transition-colors bg-muted',
-              current === idx && 'border-foreground'
+              'border border-input rounded-xl p-2.5 cursor-pointer hover:border-foreground/50 transition-colors bg-muted/20',
+              current === idx && 'border-foreground/50'
             )}>
             <Image
               src={image}
