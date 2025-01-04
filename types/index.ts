@@ -1,3 +1,7 @@
+import z from 'zod';
+
+import { CartItemSchema } from '@/schemas';
+
 import type { Product } from '@prisma/client';
 
 export type ListTypes = {
@@ -17,3 +21,5 @@ export type User = {
   email?: string;
   password?: string;
 };
+
+export type CartItem = z.infer<typeof CartItemSchema>;

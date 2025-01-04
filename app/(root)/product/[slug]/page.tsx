@@ -1,11 +1,11 @@
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 import { ProductPrice } from '@/components/shared/product';
 
 import { getProductBySlug } from '@/actions/product.action';
 import ProductImages from '@/components/shared/product-images';
+import AddToCart from '@/components/shared/add-to-cart';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -15,6 +15,15 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
+
+  const cartItem = {
+    slug: product.slug,
+    name: product.name,
+    price: Number(product.price),
+    image: product.images[0],
+    productId: product.id,
+    qty: 1,
+  };
 
   return (
     <>
@@ -60,14 +69,16 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
                   {product.stock > 0 ? (
                     <Badge variant='secondary'>In Stock</Badge>
                   ) : (
-                    <Badge variant='secondary' className='bg-rose-500 hover:bg-rose-500'>
+                    <Badge
+                      variant='secondary'
+                      className='bg-rose-500 hover:bg-rose-500'>
                       Out of Stock
                     </Badge>
                   )}
                 </div>
                 {product.stock > 0 && (
                   <div className='flex-center'>
-                    <Button className='w-full mt-2.5'>Add to Cart</Button>
+                    <AddToCart item={cartItem} />
                   </div>
                 )}
               </CardContent>

@@ -2,6 +2,8 @@ import { Poppins } from 'next/font/google';
 
 import { ThemeProvider } from 'next-themes';
 
+import { Toaster } from '@/components/ui/toaster';
+
 import { APP_NAME } from '@/constants';
 
 import type { Metadata } from 'next';
@@ -33,6 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           defaultTheme='light'
           disableTransitionOnChange>
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
