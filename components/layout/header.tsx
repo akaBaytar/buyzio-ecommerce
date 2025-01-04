@@ -59,11 +59,11 @@ const Header = async () => {
             className='relative'>
             <Link href='/cart'>
               <ShoppingCartIcon />
-              {itemsCount && itemsCount > 0 && (
+              {itemsCount && itemsCount > 0 ? (
                 <span className='absolute -top-1.5 -end-1.5 text-[.65rem] bg-muted size-3 rounded-full flex-center p-2 border border-input'>
                   {itemsCount}
                 </span>
-              )}
+              ) : null}
             </Link>
           </Button>
         </div>

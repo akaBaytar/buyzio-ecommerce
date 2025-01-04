@@ -28,10 +28,10 @@ export const getUserCart = async () => {
   return {
     ...cart,
     items: cart.items as CartItem[],
-    itemsPrice: cart.itemsPrice,
-    taxPrice: cart.taxPrice,
-    shippingPrice: cart.shippingPrice,
-    totalPrice: cart.totalPrice,
+    itemsPrice: Number(cart.itemsPrice),
+    taxPrice: Number(cart.taxPrice),
+    shippingPrice: Number(cart.shippingPrice),
+    totalPrice: Number(cart.totalPrice),
   };
 };
 
@@ -159,9 +159,13 @@ export const removeFromCart = async (id: string) => {
 
     revalidatePath(`/product/${product.slug}`);
 
+    const isLastItem = cart.items.find((i) => i.productId === id);
+
     return {
       success: true,
-      message: `${product.name} removed from cart successfully.`,
+      message: `${product.name} ${
+        isLastItem ? 'updated in' : 'removed from'
+      } cart successfully.`,
     };
   } catch (error) {
     return {

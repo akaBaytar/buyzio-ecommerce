@@ -23,3 +23,16 @@ export type User = {
 };
 
 export type CartItem = z.infer<typeof CartItemSchema>;
+
+export type Cart = {
+  items: CartItem[];
+  itemsPrice: number;
+  taxPrice: number;
+  shippingPrice: number;
+  totalPrice: number;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string | null;
+  sessionCartId: string;
+};
