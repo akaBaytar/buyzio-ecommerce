@@ -9,8 +9,13 @@ import ModeToggle from '../shared/mode-toggle';
 import UserButton from '../shared/user-button';
 
 import { APP_NAME } from '@/constants';
+import { getUserCart } from '@/actions/cart.actions';
 
-const Header = () => {
+const Header = async () => {
+  const cart = await getUserCart();
+
+  const itemsCount = cart?.items.length;
+
   return (
     <header className='w-full border-b border-input'>
       <div className='wrapper flex-between'>
@@ -46,9 +51,19 @@ const Header = () => {
               <HeartIcon />
             </Link>
           </Button>
-          <Button asChild variant='outline' size='icon' title='Shopping cart'>
+          <Button
+            asChild
+            variant='outline'
+            size='icon'
+            title='Shopping cart'
+            className='relative'>
             <Link href='/cart'>
               <ShoppingCartIcon />
+              {itemsCount && itemsCount > 0 && (
+                <span className='absolute -top-1.5 -end-1.5 text-[.65rem] bg-muted size-3 rounded-full flex-center p-2 border border-input'>
+                  {itemsCount}
+                </span>
+              )}
             </Link>
           </Button>
         </div>
