@@ -11,6 +11,30 @@ import { handleError, calculateTotal } from '@/lib/utils';
 
 import type { CartItem } from '@/types';
 
+export const getUserCart = async () => {
+  const sessionCartId = (await cookies()).get('sessionCartId')?.value;
+
+  if (!sessionCartId) throw new Error('Cart session not found.');
+
+  const session = await auth();
+  const userId = session?.user?.id ? (session.user.id as string) : undefined;
+
+  const cart = await prisma.cart.findFirst({
+    where: userId ? { userId } : { sessionCartId },
+  });
+
+  if (!cart) return undefined;
+
+  return {
+    ...cart,
+    items: cart.items as CartItem[],
+    itemsPrice: cart.itemsPrice,
+    taxPrice: cart.taxPrice,
+    shippingPrice: cart.shippingPrice,
+    totalPrice: cart.totalPrice,
+  };
+};
+
 export const addToCart = async (data: CartItem) => {
   try {
     const sessionCartId = (await cookies()).get('sessionCartId')?.value;
@@ -96,26 +120,53 @@ export const addToCart = async (data: CartItem) => {
   }
 };
 
-export const getUserCart = async () => {
-  const sessionCartId = (await cookies()).get('sessionCartId')?.value;
+export const removeFromCart = async (id: string) => {
+  try {
+    const sessionCartId = (await cookies()).get('sessionCartId')?.value;
 
-  if (!sessionCartId) throw new Error('Cart session not found.');
+    if (!sessionCartId) throw new Error('Cart session not found.');
 
-  const session = await auth();
-  const userId = session?.user?.id ? (session.user.id as string) : undefined;
+    const product = await prisma.product.findUnique({ where: { id } });
 
-  const cart = await prisma.cart.findFirst({
-    where: userId ? { userId } : { sessionCartId },
-  });
+    if (!product) throw new Error('Product not found.');
 
-  if (!cart) return undefined;
+    const cart = await getUserCart();
 
-  return {
-    ...cart,
-    items: cart.items as CartItem[],
-    itemsPrice: cart.itemsPrice.toString(),
-    taxPrice: cart.taxPrice.toString(),
-    shippingPrice: cart.shippingPrice.toString(),
-    totalPrice: cart.totalPrice.toString(),
-  };
+    if (!cart) throw new Error('User cart not found.');
+
+    const existingItem = cart.items.find((i) => i.productId === id);
+
+    if (!existingItem) throw new Error('Cart item not found.');
+
+    if (existingItem.qty === 1) {
+      cart.items = cart.items.filter(
+        (i) => i.productId !== existingItem.productId
+      );
+    } else {
+      cart.items.find((i) => i.productId === id)!.qty = existingItem.qty - 1;
+    }
+
+    await prisma.cart.update({
+      where: {
+        id: cart.id,
+      },
+
+      data: {
+        items: cart.items,
+        ...calculateTotal(cart.items),
+      },
+    });
+
+    revalidatePath(`/product/${product.slug}`);
+
+    return {
+      success: true,
+      message: `${product.name} removed from cart successfully.`,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };
