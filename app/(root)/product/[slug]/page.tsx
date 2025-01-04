@@ -52,10 +52,7 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
                 <div className='mb-2.5 flex justify-between'>
                   <p>Price</p>
                   <div>
-                    <ProductPrice
-                      value={Number(product.price)}
-                      className='text-foreground'
-                    />
+                    <ProductPrice value={Number(product.price)} />
                   </div>
                 </div>
                 <div className='mb-2.5 flex justify-between'>
@@ -63,7 +60,7 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
                   {product.stock > 0 ? (
                     <Badge variant='secondary'>In Stock</Badge>
                   ) : (
-                    <Badge variant='secondary' className='bg-rose-500'>
+                    <Badge variant='secondary' className='bg-rose-500 hover:bg-rose-500'>
                       Out of Stock
                     </Badge>
                   )}

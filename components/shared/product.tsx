@@ -14,7 +14,7 @@ export const ProductPrice = ({ value, className }: PriceTypes) => {
   const [int, float] = string.split('.');
 
   return (
-    <p className={cn('text-2xl text-rose-500 font-bold', className)}>
+    <p className={cn('text-2xl font-bold', className)}>
       <span className='text-xs align-super font-normal'>$</span>
       {int}
       <span className='text-xs align-super'>.{float}</span>
