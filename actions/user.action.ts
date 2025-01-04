@@ -5,10 +5,8 @@ import { hash } from '@/lib/encrypt';
 
 import prisma from '@/database';
 import { signIn, signOut } from '@/auth';
+import { handleError } from '@/lib/utils';
 import { SignInFormSchema, SignUpFormSchema } from '@/schemas';
-
-import { ZodError } from 'zod';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 export const signInUser = async (_: unknown, formData: FormData) => {
   try {
@@ -52,30 +50,9 @@ export const signUpUser = async (_: unknown, formData: FormData) => {
 
     return { success: true, message: 'Registered successfully.' };
   } catch (error) {
-    if (isRedirectError(error)) throw error;
-
-    if (error instanceof ZodError) {
-      return {
-        success: false,
-        message: error.errors[0].message,
-      };
-    }
-
-    if (error instanceof PrismaClientKnownRequestError) {
-      const field =
-        (error.meta?.target as string[] | undefined)?.[0] ?? 'Field';
-
-      return {
-        success: false,
-        message: `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } already exists.`,
-      };
-    }
-
     return {
       success: false,
-      message: 'An error occurred during registration.',
+      message: handleError(error),
     };
   }
 };
