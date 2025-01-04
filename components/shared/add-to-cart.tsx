@@ -22,7 +22,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
     if (!response.success) return toast({ description: response.message });
 
     toast({
-      description: `${item.name} added to cart successfully.`,
+      description: response.message,
       action: (
         <ToastAction
           altText='Go to Cart'
