@@ -1,9 +1,10 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
-import { hash } from '@/lib/encrypt';
 
 import prisma from '@/database';
+import { hash } from '@/lib/encrypt';
 import { handleError } from '@/lib/utils';
 import { auth, signIn, signOut } from '@/auth';
 
@@ -32,7 +33,11 @@ export const signInUser = async (_: unknown, formData: FormData) => {
   }
 };
 
-export const signOutUser = async () => await signOut();
+export const signOutUser = async () => {
+  (await cookies()).delete('sessionCartId');
+
+  await signOut({ redirectTo: '/' });
+};
 
 export const signUpUser = async (_: unknown, formData: FormData) => {
   try {
