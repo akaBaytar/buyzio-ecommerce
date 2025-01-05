@@ -50,3 +50,15 @@ export const CartSchema = z.object({
   sessionCartId: z.string().min(1, 'Session cart ID is required.'),
   userId: z.string().optional().nullable(),
 });
+
+export const ShippingAddressSchema = z.object({
+  fullName: z.string().min(1, 'Name must be at least one character.'),
+  streetAddress: z
+    .string()
+    .min(1, 'Street name must be at least one character.'),
+  city: z.string().min(1, 'City name must be at least one character.'),
+  postalCode: z.string().min(5, 'Postal Code must be at least 5 characters.'),
+  country: z.string().min(3, 'Country name must be at least 3 characters.'),
+  lat: z.number().optional(),
+  lng: z.number().optional(),
+});

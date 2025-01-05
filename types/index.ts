@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { CartItemSchema } from '@/schemas';
+import { CartItemSchema, ShippingAddressSchema } from '@/schemas';
 
 import type { Product } from '@prisma/client';
 
@@ -36,3 +36,5 @@ export type Cart = {
   userId: string | null;
   sessionCartId: string;
 };
+
+export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
