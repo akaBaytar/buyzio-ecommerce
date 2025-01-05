@@ -61,6 +61,7 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
           type='button'
           size='icon'
           variant='outline'
+          disabled={isPending}
           onClick={removeFromCartHandler}>
           <MinusIcon className='size-4' />
         </Button>
@@ -75,13 +76,18 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
           type='button'
           size='icon'
           variant='outline'
+          disabled={isPending}
           onClick={addToCartHandler}>
           <PlusIcon className='size-4' />
         </Button>
       </div>
     </div>
   ) : (
-    <Button type='button' onClick={addToCartHandler} className='w-full mt-2.5'>
+    <Button
+      type='button'
+      disabled={isPending}
+      onClick={addToCartHandler}
+      className='w-full mt-2.5'>
       {isPending ? (
         <Loader2Icon className='animate-spin size-4' />
       ) : (

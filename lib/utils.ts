@@ -55,3 +55,19 @@ export const calculateTotal = (items: CartItem[]) => {
     totalPrice: Number(totalPrice.toFixed(2)),
   };
 };
+
+export const formatCurrency = (amount: string | number | null) => {
+  const currencyFormatter = new Intl.NumberFormat('en-US', {
+    currency: 'USD',
+    style: 'currency',
+    minimumFractionDigits: 2,
+  });
+
+  if (typeof amount === 'number') {
+    return currencyFormatter.format(amount);
+  } else if (typeof amount === 'string') {
+    return currencyFormatter.format(Number(amount));
+  } else {
+    return 'NaN';
+  }
+};
