@@ -52,13 +52,13 @@ export const CartSchema = z.object({
 });
 
 export const ShippingAddressSchema = z.object({
-  fullName: z.string().min(1, 'Name must be at least one character.'),
+  fullName: z.string().min(3, 'Name must be at least 3 characters.'),
   streetAddress: z
     .string()
-    .min(1, 'Street name must be at least one character.'),
-  city: z.string().min(1, 'City name must be at least one character.'),
+    .min(5, 'Street name must be at least 5 characters.'),
+  city: z.string().min(2, 'City name must be at least 2 characters.'),
   postalCode: z.string().min(5, 'Postal Code must be at least 5 characters.'),
-  country: z.string().min(3, 'Country name must be at least 3 characters.'),
+  country: z.string().min(2, 'Country name must be at least 2 characters.'),
   lat: z.number().optional(),
   lng: z.number().optional(),
 });

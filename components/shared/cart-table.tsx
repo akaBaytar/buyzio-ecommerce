@@ -151,9 +151,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               <Button
                 type='button'
                 disabled={isPending}
-                onClick={() =>
-                  startTransition(() => router.push('/shipping-address'))
-                }
+                onClick={() => startTransition(() => router.push('/shipping'))}
                 className='w-full'>
                 {isPending ? (
                   <Loader2Icon className='animate-spin size-4' />
