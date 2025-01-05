@@ -4,9 +4,16 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { hash } from '@/lib/encrypt';
 
 import prisma from '@/database';
-import { signIn, signOut } from '@/auth';
 import { handleError } from '@/lib/utils';
-import { SignInFormSchema, SignUpFormSchema } from '@/schemas';
+import { auth, signIn, signOut } from '@/auth';
+
+import {
+  ShippingAddressSchema,
+  SignInFormSchema,
+  SignUpFormSchema,
+} from '@/schemas';
+
+import type { ShippingAddress } from '@/types';
 
 export const signInUser = async (_: unknown, formData: FormData) => {
   try {
@@ -65,4 +72,34 @@ export const getUser = async (id: string) => {
   if (!user) throw new Error('User not found.');
 
   return user;
+};
+
+export const updateUserAddress = async (data: ShippingAddress) => {
+  try {
+    const session = await auth();
+
+    const user = await prisma.user.findUnique({
+      where: { id: session?.user?.id },
+    });
+
+    if (!user) throw new Error('User not found.');
+
+    const address = ShippingAddressSchema.parse(data);
+
+    await prisma.user.update({
+      where: { id: user.id },
+
+      data: { address },
+    });
+
+    return {
+      success: true,
+      message: 'Address saved successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };

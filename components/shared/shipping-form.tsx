@@ -22,9 +22,10 @@ import {
 
 import { useToast } from '@/hooks/use-toast';
 import { ShippingAddressSchema } from '@/schemas';
+import { updateUserAddress } from '@/actions/user.action';
 
-import type { ControllerRenderProps } from 'react-hook-form';
 import type { ShippingAddress } from '@/types';
+import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const router = useRouter();
@@ -46,7 +47,19 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
     defaultValues: address || defaultValues,
   });
 
-  const onSubmit = () => {};
+  const onSubmit: SubmitHandler<z.infer<typeof ShippingAddressSchema>> = async (
+    values
+  ) => {
+    startTransition(async () => {
+      const response = await updateUserAddress(values);
+
+      toast({
+        description: response.message,
+      });
+
+      router.push('/payment');
+    });
+  };
 
   type NameField = {
     field: ControllerRenderProps<
