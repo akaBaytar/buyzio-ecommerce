@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import NextAuth from 'next-auth';
@@ -71,8 +72,9 @@ export const config: NextAuthConfig = {
       };
     },
 
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
+        token.id = user.id;
         token.role = (user as User).role;
         token.name = user.name || user.email!.split('@')[0];
 
@@ -82,12 +84,45 @@ export const config: NextAuthConfig = {
             data: { name: token.name },
           });
         }
+
+        if (trigger === 'signIn' || trigger === 'signUp') {
+          const sessionCartId = (await cookies()).get('sessionCartId')?.value;
+
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId },
+            });
+
+            if (sessionCart) {
+              await prisma.cart.deleteMany({ where: { userId: user.id } });
+
+              await prisma.cart.update({
+                where: { id: sessionCart.id },
+                data: { userId: user.id },
+              });
+            }
+          }
+        }
       }
 
       return token;
     },
 
-    authorized({ request }) {
+    authorized({ request, auth }) {
+      const protectedRoutes = [
+        /\/shipping/,
+        /\/payment/,
+        /\/order/,
+        /\/profile/,
+        /\/admin/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+      ];
+
+      const { pathname } = request.nextUrl;
+
+      if (!auth && protectedRoutes.some((p) => p.test(pathname))) return false;
+
       if (!request.cookies.get('sessionCartId')) {
         const sessionCartId = crypto.randomUUID();
 
