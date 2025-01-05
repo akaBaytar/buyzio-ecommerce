@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 const NotFoundPage = () => {
   return (
     <div className='flex-center flex-col min-h-screen'>
-      <div className='flex-center flex-col p-8 gap-5 text-center rounded-md shadow sm:w-1/2'>
+      <div className='flex-center flex-col gap-5 text-center rounded-md'>
         <Image
           src='/logo.svg'
           width={100}

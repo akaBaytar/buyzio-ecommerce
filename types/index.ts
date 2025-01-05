@@ -38,3 +38,9 @@ export type Cart = {
 };
 
 export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
+
+export type CheckoutSteps =
+  | 'Authentication'
+  | 'Shipping Address'
+  | 'Payment Method'
+  | 'Place Order';

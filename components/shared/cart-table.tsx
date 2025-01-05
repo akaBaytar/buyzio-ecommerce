@@ -64,7 +64,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
           <div className='overflow-x-auto lg:col-span-4'>
             <Table>
               <TableHeader>
-                <TableRow className='border-input'>
+                <TableRow className='border-input hover:bg-inherit'>
                   <TableHead>Item</TableHead>
                   <TableHead className='text-center'>Quantity</TableHead>
                   <TableHead className='text-end'>Price</TableHead>
@@ -144,7 +144,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                   {formatCurrency(cart.shippingPrice)}
                 </span>
               </div>
-              <div className='flex-between text-lg font-bold pt-5 border-t'>
+              <div className='flex-between text-lg font-bold pt-5 border-t border-input'>
                 <p>Total:</p>
                 <span>{formatCurrency(cart.totalPrice)}</span>
               </div>

@@ -1,33 +1,27 @@
 import { Fragment } from 'react';
 
 import { cn } from '@/lib/utils';
+import { CHECKOUT_STEPS } from '@/constants';
 
-type PropType =
-  | 'Authentication'
-  | 'Shipping Address'
-  | 'Payment Method'
-  | 'Place Order';
+import type { CheckoutSteps } from '@/types';
 
-const CheckoutSteps = ({ currentStep }: { currentStep: PropType }) => {
-  const steps = [
-    'Authentication',
-    'Shipping Address',
-    'Payment Method',
-    'Place Order',
-  ];
-
+const CheckoutSteps = ({ currentStep }: { currentStep: CheckoutSteps }) => {
   return (
-    <div className='hidden md:flex justify-between items-center text-center text-xs font-medium'>
-      {steps.map((step) => (
-        <Fragment key={step}>
+    <div className='flex-between text-center text-xs font-medium'>
+      {CHECKOUT_STEPS.map(({ title, icon: Icon }) => (
+        <Fragment key={title}>
           <div
+            title={title}
             className={cn(
-              'p-2.5 min-w-[20ch] rounded-md border border-input',
-              step === currentStep && 'bg-muted'
+              'p-2.5 md:min-w-[20ch] rounded-md border border-input',
+              title === currentStep && 'bg-muted'
             )}>
-            {step}
+            <span className='hidden md:block'>{title}</span>
+            <span className='md:hidden'>
+              <Icon className='size-4' />
+            </span>
           </div>
-          {step !== 'Place Order' && (
+          {title !== 'Place Order' && (
             <hr className='w-full border-t border-input' />
           )}
         </Fragment>

@@ -29,7 +29,7 @@ const Header = async () => {
               alt={`${APP_NAME} Homepage`}
               style={{ height: 'auto', width: 'auto' }}
             />
-            <span className='hidden font-bold text-2xl tracking-wider ms-2 md:block'>
+            <span className='font-semibold text-xl tracking-wider text-[#F46520] ms-2'>
               {APP_NAME}
             </span>
           </Link>
