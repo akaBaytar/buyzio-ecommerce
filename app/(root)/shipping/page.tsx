@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import CheckoutSteps from '@/components/shared/checkout-steps';
 import ShippingAddressForm from '@/components/shared/shipping-form';
 
 import { auth } from '@/auth';
@@ -27,6 +28,7 @@ const ShippingPage = async () => {
 
   return (
     <>
+      <CheckoutSteps currentStep='Shipping Address' />
       <ShippingAddressForm address={user.address as ShippingAddress} />
     </>
   );
