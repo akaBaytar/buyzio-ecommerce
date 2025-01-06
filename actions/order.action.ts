@@ -98,10 +98,10 @@ export const createOrder = async () => {
 };
 
 export const getOrder = async (id: string) => {
-  return await prisma.order.findUnique({
+  const order = await prisma.order.findUnique({
     where: { id },
     include: {
-      OrderItem: true,
+      orderItems: true,
       user: {
         select: {
           name: true,
@@ -110,4 +110,6 @@ export const getOrder = async (id: string) => {
       },
     },
   });
+
+  return JSON.parse(JSON.stringify(order));
 };

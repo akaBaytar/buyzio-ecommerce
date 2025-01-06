@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
 
+import OrderDetailsTable from '@/components/shared/order-details-table';
+
 import { getOrder } from '@/actions/order.action';
 
 import type { Metadata } from 'next';
@@ -19,7 +21,16 @@ const OrderDetailsPage = async ({ params }: PageProps) => {
 
   if (!order) notFound();
 
-  return <>Order Details</>;
+  return (
+    <>
+      <OrderDetailsTable
+        order={{
+          ...order,
+          shippingAddress: order.shippingAddress,
+        }}
+      />
+    </>
+  );
 };
 
 export default OrderDetailsPage;
