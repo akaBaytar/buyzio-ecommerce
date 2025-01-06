@@ -71,3 +71,50 @@ export const formatCurrency = (amount: string | number | null) => {
     return 'NaN';
   }
 };
+
+export const formatID = (id: string) => `...${id.substring(id.length - 6)}`;
+
+export const formatDate = (date: Date) => {
+  const dateTimeOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+  };
+
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+
+  const formattedDateAndTime: string = new Date(date).toLocaleString(
+    'en-US',
+    dateTimeOptions
+  );
+
+  const formattedDate: string = new Date(date).toLocaleString(
+    'en-US',
+    dateOptions
+  );
+
+  const formattedTime: string = new Date(date).toLocaleString(
+    'en-US',
+    timeOptions
+  );
+
+  return {
+    dateAndTime: formattedDateAndTime,
+    date: formattedDate,
+    time: formattedTime,
+  };
+};
