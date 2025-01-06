@@ -9,10 +9,10 @@ export const LATEST_PRODUCTS_LIMIT =
   Number(process.env.NEXT_PUBLIC_LATEST_PRODUCTS_LIMIT) || 4;
 
 export const CHECKOUT_STEPS = [
-  { title: 'Authentication', icon: UserIcon },
-  { title: 'Shipping Address', icon: TruckIcon },
-  { title: 'Payment Method', icon: CreditCardIcon },
-  { title: 'Place Order', icon: CheckIcon },
+  { title: 'Authentication', href: '/profile', icon: UserIcon },
+  { title: 'Shipping Address', href: '/shipping', icon: TruckIcon },
+  { title: 'Payment Method', href: '/payment', icon: CreditCardIcon },
+  { title: 'Place Order', href: '/order', icon: CheckIcon },
 ];
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
