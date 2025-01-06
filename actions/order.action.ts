@@ -98,8 +98,14 @@ export const createOrder = async () => {
 };
 
 export const getOrder = async (id: string) => {
+  const session = await auth();
+
+  if (!session) throw new Error('Session not found.');
+
+  const userId = session.user?.id;
+
   const order = await prisma.order.findUnique({
-    where: { id },
+    where: { id, userId },
     include: {
       orderItems: true,
       user: {
@@ -112,4 +118,27 @@ export const getOrder = async (id: string) => {
   });
 
   return JSON.parse(JSON.stringify(order));
+};
+
+export const getOrders = async () => {
+  try {
+    const session = await auth();
+
+    if (!session) throw new Error('Session not found.');
+
+    const userId = session.user?.id;
+
+    if (!userId) throw new Error('User not found.');
+
+    const orders = await prisma.order.findMany({
+      where: { userId },
+    });
+
+    return JSON.parse(JSON.stringify(orders));
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };

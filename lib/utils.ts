@@ -72,7 +72,7 @@ export const formatCurrency = (amount: string | number | null) => {
   }
 };
 
-export const formatID = (id: string) => `...${id.substring(id.length - 6)}`;
+export const formatID = (id: string) => `...${id.substring(id.length - 12)}`;
 
 export const formatDate = (date: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
