@@ -1,7 +1,9 @@
 import z from 'zod';
 
 import {
+  AddOrderSchema,
   CartItemSchema,
+  AddOrderItemSchema,
   PaymentMethodSchema,
   ShippingAddressSchema,
 } from '@/schemas';
@@ -50,3 +52,17 @@ export type CheckoutSteps =
   | 'Place Order';
 
 export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;
+
+export type OrderItem = z.infer<typeof AddOrderItemSchema>;
+
+export type Order = z.infer<typeof AddOrderSchema> & {
+  id: string;
+  isPaid: boolean;
+  isDelivered: boolean;
+  paidAt: Date | null;
+  shippingAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  orderItems: OrderItem[];
+  user: { name: string; email: string };
+};

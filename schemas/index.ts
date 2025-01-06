@@ -73,3 +73,24 @@ export const PaymentMethodSchema = z
     path: ['type'],
     message: 'Invalid payment method.',
   });
+
+export const AddOrderSchema = z.object({
+  userId: z.string().min(1, 'User ID is required.'),
+  itemsPrice: z.number(),
+  shippingPrice: z.number(),
+  taxPrice: z.number(),
+  totalPrice: z.number(),
+  paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
+    message: 'Invalid payment method.',
+  }),
+  shippingAddress: ShippingAddressSchema,
+});
+
+export const AddOrderItemSchema = z.object({
+  productId: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  image: z.string(),
+  price: z.number(),
+  qty: z.number(),
+});
