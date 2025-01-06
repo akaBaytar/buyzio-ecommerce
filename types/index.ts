@@ -1,6 +1,10 @@
 import z from 'zod';
 
-import { CartItemSchema, ShippingAddressSchema } from '@/schemas';
+import {
+  CartItemSchema,
+  PaymentMethodSchema,
+  ShippingAddressSchema,
+} from '@/schemas';
 
 import type { Product } from '@prisma/client';
 
@@ -44,3 +48,5 @@ export type CheckoutSteps =
   | 'Shipping Address'
   | 'Payment Method'
   | 'Place Order';
+
+export type PaymentMethod = z.infer<typeof PaymentMethodSchema>;

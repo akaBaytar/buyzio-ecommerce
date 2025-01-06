@@ -14,3 +14,11 @@ export const CHECKOUT_STEPS = [
   { title: 'Payment Method', icon: CreditCardIcon },
   { title: 'Place Order', icon: CheckIcon },
 ];
+
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
+  ? process.env.PAYMENT_METHODS.split(', ')
+  : ['Credit Card', 'Cash on Delivery'];
+
+export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
+  ? process.env.DEFAULT_PAYMENT_METHOD
+  : 'Credit Card';

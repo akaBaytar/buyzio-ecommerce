@@ -9,12 +9,13 @@ import { handleError } from '@/lib/utils';
 import { auth, signIn, signOut } from '@/auth';
 
 import {
-  ShippingAddressSchema,
   SignInFormSchema,
   SignUpFormSchema,
+  PaymentMethodSchema,
+  ShippingAddressSchema,
 } from '@/schemas';
 
-import type { ShippingAddress } from '@/types';
+import type { ShippingAddress, PaymentMethod } from '@/types';
 
 export const signInUser = async (_: unknown, formData: FormData) => {
   try {
@@ -93,13 +94,41 @@ export const updateUserAddress = async (data: ShippingAddress) => {
 
     await prisma.user.update({
       where: { id: user.id },
-
       data: { address },
     });
 
     return {
       success: true,
       message: 'Address saved successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const updateUserPaymentMethod = async (data: PaymentMethod) => {
+  try {
+    const session = await auth();
+
+    const user = await prisma.user.findUnique({
+      where: { id: session?.user?.id },
+    });
+
+    if (!user) throw new Error('User not found.');
+
+    const paymentMethod = PaymentMethodSchema.parse(data);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { paymentMethod: paymentMethod.type },
+    });
+
+    return {
+      success: true,
+      message: 'Payment method updated successfully.',
     };
   } catch (error) {
     return {
