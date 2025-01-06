@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/table';
 
 import CheckoutSteps from '@/components/shared/checkout-steps';
+import PlaceOrderForm from '@/components/shared/place-order-form';
 
 import { auth } from '@/auth';
 import { formatCurrency } from '@/lib/utils';
@@ -158,9 +159,7 @@ const PlaceOrderPage = async () => {
                 <p>Total:</p>
                 <span>{formatCurrency(cart.totalPrice)}</span>
               </div>
-              <Button type='button' className='w-full'>
-                Place Order
-              </Button>
+              <PlaceOrderForm />
             </CardContent>
           </Card>
         </div>
