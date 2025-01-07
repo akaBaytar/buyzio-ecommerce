@@ -183,24 +183,32 @@ const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
                 <p>Total:</p>
                 <span>{formatCurrency(totalPrice)}</span>
               </div>
+              {isPaid ? (
+                <p className='text-xs text-center bg-input p-2.5 rounded-md'>
+                  Paid at {formatDate(paidAt as Date).date} via {paymentMethod}
+                </p>
+              ) : !isPaid && paymentMethod !== 'Paypal' ? (
+                <p className='text-xs text-center bg-input p-2.5 rounded-md'>
+                  Not paid yet
+                </p>
+              ) : null}
+              {!isPaid && paymentMethod === 'Paypal' && (
+                <div style={{ colorScheme: 'none' }}>
+                  <PayPalScriptProvider options={{ clientId: paypalClientId }}>
+                    <PayPalButtons
+                      createOrder={createPaypalOrder}
+                      onApprove={approvePaypalOrder}
+                      style={{
+                        disableMaxWidth: true,
+                        layout: 'horizontal',
+                        tagline: false,
+                        height: 36,
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                </div>
+              )}
             </CardContent>
-            {!isPaid && paymentMethod === 'Paypal' && (
-              <div style={{ colorScheme: 'none' }} className='flex w-full mx-5'>
-                <PayPalScriptProvider options={{ clientId: paypalClientId }}>
-                  <PayPalButtons
-                    createOrder={createPaypalOrder}
-                    onApprove={approvePaypalOrder}
-                    style={{
-                      disableMaxWidth: true,
-                      layout: 'horizontal',
-                      tagline: false,
-                      height: 36,
-                    }}
-                    className='w-[calc(100%-2.5rem)]'
-                  />
-                </PayPalScriptProvider>
-              </div>
-            )}
           </Card>
         </div>
       </div>

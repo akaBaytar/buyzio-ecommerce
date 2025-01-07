@@ -159,7 +159,40 @@ const PlaceOrderPage = async () => {
                 <p>Total:</p>
                 <span>{formatCurrency(cart.totalPrice)}</span>
               </div>
-              <PlaceOrderForm />
+              <PlaceOrderForm paymentMethod={user.paymentMethod} />
+            </CardContent>
+          </Card>
+          <Card className='mt-5 border-input'>
+            <CardContent className='p-5'>
+              {user.paymentMethod === 'Paypal' && (
+                <p className='text-xs text-muted-foreground leading-normal'>
+                  You will pay with PayPal and once your order is created, the
+                  payment method cannot be changed. You can securely make the
+                  payment with PayPal in the next step.
+                </p>
+              )}
+              {user.paymentMethod === 'Credit Card' && (
+                <p className='text-xs text-muted-foreground leading-normal'>
+                  You will pay with a credit card and once your order is
+                  created, the payment method cannot be changed. You can
+                  securely make the payment in the next step using the Stripe
+                  infrastructure.
+                </p>
+              )}
+              {user.paymentMethod === 'Bank Transfer' && (
+                <p className='text-xs text-muted-foreground leading-normal'>
+                  You will pay via bank transfer and once your order is created,
+                  the payment method cannot be changed. You can access the
+                  details of your order in the next step.
+                </p>
+              )}
+              {user.paymentMethod === 'Cash on Delivery' && (
+                <p className='text-xs text-muted-foreground leading-normal'>
+                  You will pay using the cash-on-delivery method and once your
+                  order is created, the payment method cannot be changed. You
+                  can access your order details in the next step.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>

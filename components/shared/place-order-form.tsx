@@ -10,13 +10,15 @@ import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { createOrder } from '@/actions/order.action';
 
-const PlaceOrderButton = () => {
+const PlaceOrderButton = ({ paymentMethod }: { paymentMethod?: string }) => {
   const { pending } = useFormStatus();
 
   return (
     <Button disabled={pending} className='w-full'>
       {pending ? (
         <Loader2Icon className='size-4 animate-spin' />
+      ) : paymentMethod ? (
+        `Place Order via ${paymentMethod}`
       ) : (
         'Place Order'
       )}
@@ -24,7 +26,7 @@ const PlaceOrderButton = () => {
   );
 };
 
-const PlaceOrderForm = () => {
+const PlaceOrderForm = ({ paymentMethod }: { paymentMethod: string }) => {
   const router = useRouter();
 
   const { toast } = useToast();
@@ -43,7 +45,7 @@ const PlaceOrderForm = () => {
 
   return (
     <form onSubmit={onSubmit} className='w-full'>
-      <PlaceOrderButton />
+      <PlaceOrderButton paymentMethod={paymentMethod} />
     </form>
   );
 };

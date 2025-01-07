@@ -14,6 +14,11 @@ import { getUserCart } from './cart.actions';
 
 import type { CartItem, PaymentResult } from '@/types';
 
+type UpdateAsPaid = {
+  id: string;
+  paymentResult?: PaymentResult;
+};
+
 export const createOrder = async () => {
   try {
     const session = await auth();
@@ -201,7 +206,7 @@ export const approvePayPalOrder = async (
       throw new Error('Error in PayPal payment.');
     }
 
-    await updateOrderToPaid({
+    await updateOrderAsPaid({
       id,
       paymentResult: {
         id: captureData.id,
@@ -216,20 +221,14 @@ export const approvePayPalOrder = async (
 
     return {
       success: true,
-      message: 'Your order has been paid.',
+      message: 'Order paid successfully.',
     };
   } catch (error) {
     return { success: false, message: handleError(error) };
   }
 };
 
-export const updateOrderToPaid = async ({
-  id,
-  paymentResult,
-}: {
-  id: string;
-  paymentResult?: PaymentResult;
-}) => {
+const updateOrderAsPaid = async ({ id, paymentResult }: UpdateAsPaid) => {
   const order = await prisma.order.findFirst({
     where: { id },
     include: { orderItems: true },
