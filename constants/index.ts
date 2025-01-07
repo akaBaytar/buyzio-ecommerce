@@ -17,7 +17,7 @@ export const CHECKOUT_STEPS = [
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
   ? process.env.PAYMENT_METHODS.split(', ')
-  : ['Credit Card', 'Paypal', 'Cash on Delivery'];
+  : ['Credit Card', 'Paypal', 'Bank Transfer', 'Cash on Delivery'];
 
 export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
   ? process.env.DEFAULT_PAYMENT_METHOD

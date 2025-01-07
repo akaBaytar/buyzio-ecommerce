@@ -94,3 +94,10 @@ export const AddOrderItemSchema = z.object({
   price: z.number(),
   qty: z.number(),
 });
+
+export const PaymentResultSchema = z.object({
+  id: z.string(),
+  status: z.string(),
+  email_address: z.string(),
+  pricePaid: z.string(),
+});

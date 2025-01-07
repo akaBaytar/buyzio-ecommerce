@@ -4,6 +4,7 @@ import {
   AddOrderSchema,
   CartItemSchema,
   AddOrderItemSchema,
+  PaymentResultSchema,
   PaymentMethodSchema,
   ShippingAddressSchema,
 } from '@/schemas';
@@ -66,3 +67,5 @@ export type Order = z.infer<typeof AddOrderSchema> & {
   orderItems: OrderItem[];
   user: { name: string; email: string };
 };
+
+export type PaymentResult = z.infer<typeof PaymentResultSchema>;
