@@ -147,19 +147,15 @@ export const getOrders = async () => {
   }
 };
 
-export const createPayPalOrder = async (orderId: string) => {
+export const createPayPalOrder = async (id: string) => {
   try {
-    const order = await prisma.order.findFirst({
-      where: {
-        id: orderId,
-      },
-    });
+    const order = await prisma.order.findUnique({ where: { id } });
 
     if (order) {
       const paypalOrder = await paypal.createOrder(Number(order.totalPrice));
 
       await prisma.order.update({
-        where: { id: orderId },
+        where: { id },
         data: {
           paymentResult: {
             id: paypalOrder.id,
@@ -187,15 +183,11 @@ export const createPayPalOrder = async (orderId: string) => {
 };
 
 export const approvePayPalOrder = async (
-  orderId: string,
+  id: string,
   data: { orderID: string }
 ) => {
   try {
-    const order = await prisma.order.findFirst({
-      where: {
-        id: orderId,
-      },
-    });
+    const order = await prisma.order.findUnique({ where: { id } });
 
     if (!order) throw new Error('Order not found.');
 
@@ -210,7 +202,7 @@ export const approvePayPalOrder = async (
     }
 
     await updateOrderToPaid({
-      orderId,
+      id,
       paymentResult: {
         id: captureData.id,
         status: captureData.status,
@@ -220,7 +212,7 @@ export const approvePayPalOrder = async (
       },
     });
 
-    revalidatePath(`/orders/${orderId}`);
+    revalidatePath(`/orders/${id}`);
 
     return {
       success: true,
@@ -232,20 +224,17 @@ export const approvePayPalOrder = async (
 };
 
 export const updateOrderToPaid = async ({
-  orderId,
+  id,
   paymentResult,
 }: {
-  orderId: string;
+  id: string;
   paymentResult?: PaymentResult;
 }) => {
   const order = await prisma.order.findFirst({
-    where: {
-      id: orderId,
-    },
-    include: {
-      orderItems: true,
-    },
+    where: { id },
+    include: { orderItems: true },
   });
+
   if (!order) throw new Error('Order not found.');
 
   if (order.isPaid) throw new Error('Order is already paid.');
@@ -253,21 +242,13 @@ export const updateOrderToPaid = async ({
   await prisma.$transaction(async (tx) => {
     for (const item of order.orderItems) {
       await tx.product.update({
-        where: {
-          id: item.productId,
-        },
-        data: {
-          stock: {
-            increment: -item.qty,
-          },
-        },
+        where: { id: item.productId },
+        data: { stock: { increment: -item.qty } },
       });
     }
 
     await tx.order.update({
-      where: {
-        id: orderId,
-      },
+      where: { id },
       data: {
         isPaid: true,
         paidAt: new Date(),

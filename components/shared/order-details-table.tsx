@@ -3,11 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import {
-  PayPalButtons,
-  PayPalScriptProvider,
-  usePayPalScriptReducer,
-} from '@paypal/react-paypal-js';
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
@@ -27,27 +23,12 @@ import { createPayPalOrder, approvePayPalOrder } from '@/actions/order.action';
 
 import type { Order } from '@/types';
 
-const PayPalLoadingState = () => {
-  const [{ isPending, isRejected }] = usePayPalScriptReducer();
-
-  let status = '';
-
-  if (isPending) {
-    status = 'Payment is being processed.';
-  } else if (isRejected) {
-    status = 'An error occurred.';
-  }
-
-  return status;
-};
-
-const OrderDetailsTable = ({
-  order,
-  paypalClientId,
-}: {
+type PropTypes = {
   order: Order;
   paypalClientId: string;
-}) => {
+};
+
+const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
   const { toast } = useToast();
 
   const {
@@ -206,11 +187,16 @@ const OrderDetailsTable = ({
             {!isPaid && paymentMethod === 'Paypal' && (
               <div style={{ colorScheme: 'none' }} className='flex w-full mx-5'>
                 <PayPalScriptProvider options={{ clientId: paypalClientId }}>
-                  <PayPalLoadingState />
                   <PayPalButtons
                     createOrder={createPaypalOrder}
                     onApprove={approvePaypalOrder}
-                    className='flex w-[calc(100%-2.5rem)]'
+                    style={{
+                      disableMaxWidth: true,
+                      layout: 'horizontal',
+                      tagline: false,
+                      height: 36,
+                    }}
+                    className='w-[calc(100%-2.5rem)]'
                   />
                 </PayPalScriptProvider>
               </div>
