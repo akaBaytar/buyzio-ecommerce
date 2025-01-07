@@ -3,13 +3,14 @@ const API = process.env.PAYPAL_API_URL || 'https://api-m.sandbox.paypal.com';
 export const paypal = {
   createOrder: async (price: number) => {
     const accessToken = await generateAccessToken();
+
     const url = `${API}/v2/checkout/orders`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         intent: 'CAPTURE',
@@ -24,34 +25,23 @@ export const paypal = {
       }),
     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      const message = await response.text();
-
-      throw new Error(message);
-    }
+    return handleResponse(response);
   },
 
-  capturePayment: async (id: string) => {
+  capturePayment: async (orderId: string) => {
     const accessToken = await generateAccessToken();
-    const url = `${API}/v2/checkout/orders/${id}/capture`;
+
+    const url = `${API}/v2/checkout/orders/${orderId}/capture`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (response.ok) {
-      return await response.json();
-    } else {
-      const message = await response.text();
-
-      throw new Error(message);
-    }
+    return handleResponse(response);
   },
 };
 
@@ -71,13 +61,17 @@ const generateAccessToken = async () => {
     },
   });
 
+  const jsonData = await handleResponse(response);
+
+  return jsonData.access_token;
+};
+
+const handleResponse = async (response: Response) => {
   if (response.ok) {
-    const data = await response.json();
-
-    return data.access_token;
+    return response.json();
   } else {
-    const message = await response.text();
+    const errorMessage = await response.text();
 
-    throw new Error(message);
+    throw new Error(errorMessage);
   }
 };
