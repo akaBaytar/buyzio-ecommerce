@@ -132,6 +132,7 @@ export const getOrders = async () => {
 
     const orders = await prisma.order.findMany({
       where: { userId },
+      orderBy: { createdAt: 'desc' },
     });
 
     return JSON.parse(JSON.stringify(orders));

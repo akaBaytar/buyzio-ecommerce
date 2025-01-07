@@ -7,6 +7,7 @@ import { Loader2Icon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
+import { useToast } from '@/hooks/use-toast';
 import { createOrder } from '@/actions/order.action';
 
 const PlaceOrderButton = () => {
@@ -26,10 +27,16 @@ const PlaceOrderButton = () => {
 const PlaceOrderForm = () => {
   const router = useRouter();
 
+  const { toast } = useToast();
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const response = await createOrder();
+
+    toast({
+      description: response.message,
+    });
 
     if (response.redirectTo) router.push(response.redirectTo);
   };
