@@ -60,7 +60,12 @@ export const config: NextAuthConfig = {
   ],
 
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, trigger, user }) {
+      if (trigger === 'update') {
+        session.user.name = user.name;
+        session.user.email = user.email;
+      }
+
       return {
         ...session,
         user: {
@@ -72,7 +77,7 @@ export const config: NextAuthConfig = {
       };
     },
 
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.role = (user as User).role;
@@ -103,6 +108,11 @@ export const config: NextAuthConfig = {
             }
           }
         }
+      }
+
+      if (trigger === 'update') {
+        token.name = session.user.name;
+        token.email = session.user.email;
       }
 
       return token;

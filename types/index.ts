@@ -3,6 +3,7 @@ import z from 'zod';
 import {
   AddOrderSchema,
   CartItemSchema,
+  UpdateUserSchema,
   AddOrderItemSchema,
   PaymentResultSchema,
   PaymentMethodSchema,
@@ -69,3 +70,5 @@ export type Order = z.infer<typeof AddOrderSchema> & {
 };
 
 export type PaymentResult = z.infer<typeof PaymentResultSchema>;
+
+export type UpdateUser = z.infer<typeof UpdateUserSchema>;

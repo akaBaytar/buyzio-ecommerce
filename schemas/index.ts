@@ -101,3 +101,8 @@ export const PaymentResultSchema = z.object({
   email_address: z.string(),
   pricePaid: z.string(),
 });
+
+export const UpdateUserSchema = z.object({
+  name: z.string().min(1, 'Name must be at least one character.'),
+  email: z.string().email('Invalid email address.'),
+});

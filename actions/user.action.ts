@@ -15,7 +15,7 @@ import {
   ShippingAddressSchema,
 } from '@/schemas';
 
-import type { ShippingAddress, PaymentMethod, User } from '@/types';
+import type { ShippingAddress, PaymentMethod, UpdateUser } from '@/types';
 
 export const signInUser = async (_: unknown, formData: FormData) => {
   try {
@@ -80,7 +80,7 @@ export const getUser = async (id: string) => {
   return user;
 };
 
-export const updateUser = async (user: User) => {
+export const updateUser = async (user: UpdateUser) => {
   try {
     const session = await auth();
 
@@ -94,7 +94,7 @@ export const updateUser = async (user: User) => {
       where: { id: currentUser.id },
       data: {
         name: user.name,
-        email: user.name,
+        email: user.email,
       },
     });
 
