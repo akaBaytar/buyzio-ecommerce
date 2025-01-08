@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 import {
   Table,
@@ -10,17 +11,36 @@ import {
   TableCaption,
 } from '@/components/ui/table';
 
+import Pagination from '@/components/shared/pagination';
+
 import { formatCurrency, formatDate, formatID } from '@/lib/utils';
 import { getOrders } from '@/actions/order.action';
 
 import type { Order } from '@/types';
 
-const OrdersPage = async () => {
-  const orders = await getOrders();
+export const metadata: Metadata = {
+  title: 'My Orders',
+};
+
+type PageProps = {
+  searchParams: Promise<{ page: string }>;
+};
+
+const OrdersPage = async ({ searchParams }: PageProps) => {
+  const { page } = await searchParams;
+
+  const response = await getOrders({ page: +page || 1 });
+
+  const { orders, orderCount, totalPages } = response;
 
   return (
     <>
-      <h1 className='my-5 h2-bold'>Orders</h1>
+      <div className='flex-between my-5'>
+        <h1 className='h2-bold'>Orders</h1>
+        {totalPages && totalPages > 1 && (
+          <Pagination page={+page || 1} totalPages={totalPages} />
+        )}
+      </div>
       <Table>
         <TableHeader>
           <TableRow className='border-input hover:bg-inherit'>
@@ -30,15 +50,13 @@ const OrdersPage = async () => {
             <TableHead className='min-w-[16ch]'>Total Price</TableHead>
             <TableHead className='min-w-[16ch]'>Payment Status</TableHead>
             <TableHead className='min-w-[16ch]'>Delivered</TableHead>
-            <TableHead className='min-w-[16ch]'>Shipping Address</TableHead>
+            <TableHead className='min-w-[16ch]'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order: Order) => (
+          {orders?.map((order: Order) => (
             <TableRow key={order.id} className='text-xs border-input'>
-              <TableCell title={order.id}>
-                <Link href={`/orders/${order.id}`}>{formatID(order.id)}</Link>
-              </TableCell>
+              <TableCell title={order.id}>{formatID(order.id)}</TableCell>
               <TableCell>{formatDate(order.createdAt).dateAndTime}</TableCell>
               <TableCell>{order.paymentMethod}</TableCell>
               <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
@@ -53,13 +71,14 @@ const OrdersPage = async () => {
                   : 'Not delivered'}
               </TableCell>
               <TableCell>
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country}
+                <Link href={`/orders/${order.id}`}>Show Details</Link>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableCaption>End of Orders</TableCaption>
+        <TableCaption className='text-xs'>
+          Page: {page} of {totalPages} - Total Order: {orderCount}
+        </TableCaption>
       </Table>
     </>
   );

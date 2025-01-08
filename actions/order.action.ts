@@ -19,6 +19,11 @@ type UpdateAsPaid = {
   paymentResult?: PaymentResult;
 };
 
+type GetOrders = {
+  limit?: number;
+  page: number;
+};
+
 export const createOrder = async () => {
   try {
     const session = await auth();
@@ -128,7 +133,7 @@ export const getOrder = async (id: string) => {
   return JSON.parse(JSON.stringify(order));
 };
 
-export const getOrders = async () => {
+export const getOrders = async ({ page, limit }: GetOrders) => {
   try {
     const session = await auth();
 
@@ -138,12 +143,22 @@ export const getOrders = async () => {
 
     if (!userId) throw new Error('User not found.');
 
+    const orderCount = await prisma.order.count({ where: { userId } });
+
     const orders = await prisma.order.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: (page - 1) * (limit || 10),
     });
 
-    return JSON.parse(JSON.stringify(orders));
+    const totalPages = Math.ceil(orderCount / (limit || 10));
+
+    return {
+      totalPages,
+      orderCount,
+      orders: JSON.parse(JSON.stringify(orders)),
+    };
   } catch (error) {
     return {
       success: false,

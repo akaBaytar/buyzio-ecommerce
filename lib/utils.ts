@@ -1,10 +1,17 @@
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 import { clsx } from 'clsx';
+import qs from 'query-string';
 import { twMerge } from 'tailwind-merge';
 
 import type { ClassValue } from 'clsx';
 import type { CartItem } from '@/types';
+
+type URLQuery = {
+  params: string;
+  key: string;
+  value: string | null;
+};
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -117,4 +124,17 @@ export const formatDate = (date: Date) => {
     date: formattedDate,
     time: formattedTime,
   };
+};
+
+export const handleURLQuery = ({ key, params, value }: URLQuery) => {
+  const query = qs.parse(params);
+
+  query[key] = value;
+
+  const url = qs.stringifyUrl(
+    { url: window.location.pathname, query },
+    { skipNull: true }
+  );
+
+  return url;
 };
