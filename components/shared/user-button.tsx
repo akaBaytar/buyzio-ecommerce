@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { UserIcon } from 'lucide-react';
+import { UserIcon, LogOutIcon, BoxIcon, HeartIcon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '../ui/dropdown-menu';
 
 import { auth } from '@/auth';
@@ -42,34 +43,68 @@ const UserButton = async () => {
               variant='outline'
               size='icon'
               className='relative flex-center'>
+              <UserIcon />
+            </Button>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='border-input p-2.5 mt-1.5'>
+          <DropdownMenuLabel className='font-normal'>
+            <div className='flex items-center gap-2.5'>
               {userImg ? (
                 <Image
                   src={userImg}
                   alt='User Avatar'
-                  width={18}
-                  height={18}
-                  className='rounded-md'
+                  width={26}
+                  height={26}
+                  className='rounded object-cover object-center aspect-square'
                 />
               ) : (
-                <UserIcon className='size-4' />
+                <Image
+                  src='/user.png'
+                  alt='User Avatar'
+                  width={26}
+                  height={26}
+                  className='rounded object-cover object-center aspect-square'
+                />
               )}
-            </Button>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='border-input py-2.5 px-5 mt-2 w-58'>
-          <DropdownMenuLabel className='font-normal'>
-            <div className='flex flex-col gap-2.5'>
-              <p className='text-sm leading-none line-clamp-1'>{fullName}</p>
-              <p className='text-xs text-muted-foreground leading-none line-clamp-1'>
-                {email}
-              </p>
+              <div className='flex flex-col gap-0.5'>
+                <p className='text-xs leading-none line-clamp-1'>{fullName}</p>
+                <p className='text-xs text-muted-foreground leading-none line-clamp-1'>
+                  {email}
+                </p>
+              </div>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuItem className='p-0 mt-2.5'>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link
+              href='/profile'
+              className='w-full flex items-center gap-2.5 text-xs'>
+              <UserIcon className='size-4' /> My Profile
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href='/orders'
+              className='w-full flex items-center gap-2.5 text-xs'>
+              <BoxIcon className='size-4' /> My Orders
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href='/favorites'
+              className='w-full flex items-center gap-2.5 text-xs'>
+              <HeartIcon className='size-4' /> Favorites List
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
             <form action={signOutUser} className='w-full'>
-              <Button variant='outline' size='sm' className='w-full'>
-                Sign out
-              </Button>
+              <button
+                type='submit'
+                className='w-full flex items-center gap-2.5 text-xs'>
+                <LogOutIcon className='size-4' /> Logout
+              </button>
             </form>
           </DropdownMenuItem>
         </DropdownMenuContent>

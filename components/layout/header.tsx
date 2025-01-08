@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { HeartIcon, SearchIcon, ShoppingCartIcon } from 'lucide-react';
+import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
@@ -37,19 +37,8 @@ const Header = async () => {
         <div className='flex items-center gap-2'>
           <ModeToggle />
           <UserButton />
-          <Button
-            asChild
-            variant='outline'
-            size='icon'
-            title='Search for products'>
-            <Link href='/search'>
-              <SearchIcon />
-            </Link>
-          </Button>
-          <Button asChild variant='outline' size='icon' title='Favorites'>
-            <Link href='/favorites'>
-              <HeartIcon />
-            </Link>
+          <Button variant='outline' size='icon' title='Search for products'>
+            <SearchIcon />
           </Button>
           <Button
             asChild

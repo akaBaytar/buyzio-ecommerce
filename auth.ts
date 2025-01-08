@@ -113,9 +113,9 @@ export const config: NextAuthConfig = {
         /\/shipping/,
         /\/payment/,
         /\/order/,
+        /\/orders/,
         /\/profile/,
         /\/admin/,
-        /\/user\/(.*)/,
         /\/order\/(.*)/,
       ];
 
