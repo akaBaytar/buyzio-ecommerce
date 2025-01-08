@@ -15,7 +15,7 @@ import {
   ShippingAddressSchema,
 } from '@/schemas';
 
-import type { ShippingAddress, PaymentMethod } from '@/types';
+import type { ShippingAddress, PaymentMethod, User } from '@/types';
 
 export const signInUser = async (_: unknown, formData: FormData) => {
   try {
@@ -78,6 +78,36 @@ export const getUser = async (id: string) => {
   if (!user) throw new Error('User not found.');
 
   return user;
+};
+
+export const updateUser = async (user: User) => {
+  try {
+    const session = await auth();
+
+    const userId = session?.user?.id;
+
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!currentUser) throw new Error('User not found.');
+
+    await prisma.user.update({
+      where: { id: currentUser.id },
+      data: {
+        name: user.name,
+        email: user.name,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'User information updated successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };
 
 export const updateUserAddress = async (data: ShippingAddress) => {
