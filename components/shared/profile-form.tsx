@@ -61,6 +61,7 @@ const ProfileForm = () => {
                   <Input
                     {...field}
                     placeholder='Enter your full name'
+                    autoComplete='name'
                     className='p-5'
                   />
                 </FormControl>
@@ -77,6 +78,7 @@ const ProfileForm = () => {
                   <Input
                     {...field}
                     placeholder='Enter your email address'
+                    autoComplete='email'
                     className='p-5'
                   />
                 </FormControl>
