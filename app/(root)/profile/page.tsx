@@ -11,6 +11,9 @@ export const metadata: Metadata = {
 const ProfilePage = async () => {
   const session = await auth();
 
+  console.log({session});
+  
+
   return (
     <SessionProvider session={session}>
       <div className='space-y-5'>

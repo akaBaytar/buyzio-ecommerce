@@ -9,7 +9,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form';
 
 import { UpdateUserSchema } from '@/schemas';
 import { updateUser } from '@/actions/user.action';
@@ -24,6 +31,8 @@ const ProfileForm = () => {
     defaultValues: {
       name: session?.user?.name ?? '',
       email: session?.user?.email ?? '',
+      newPassword: '',
+      confirmPassword: '',
     },
   });
 
@@ -62,9 +71,10 @@ const ProfileForm = () => {
                     {...field}
                     placeholder='Enter your full name'
                     autoComplete='name'
-                    className='p-5'
+                    className='p-5 text-sm'
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -79,13 +89,53 @@ const ProfileForm = () => {
                     {...field}
                     placeholder='Enter your email address'
                     autoComplete='email'
-                    className='p-5'
+                    className='p-5 text-sm'
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='newPassword'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabel>New Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type='password'
+                    placeholder='******'
+                    autoComplete='none'
+                    className='p-5 text-sm'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='confirmPassword'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type='password'
+                    placeholder='******'
+                    autoComplete='none'
+                    className='p-5 text-sm'
+                  />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
         </div>
+        {}
         <Button
           type='submit'
           variant='secondary'

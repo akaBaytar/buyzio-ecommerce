@@ -102,7 +102,29 @@ export const PaymentResultSchema = z.object({
   pricePaid: z.string(),
 });
 
-export const UpdateUserSchema = z.object({
-  name: z.string().min(1, 'Name must be at least one character.'),
-  email: z.string().email('Invalid email address.'),
-});
+export const UpdateUserSchema = z
+  .object({
+    name: z.string().min(1, 'Name must be at least one character.'),
+    email: z.string().email('Invalid email address.'),
+    newPassword: z
+      .string()
+      .min(6, 'Password must be at least 6 characters.')
+      .optional()
+      .or(z.literal('')),
+    confirmPassword: z
+      .string()
+      .min(6, 'Password must be at least 6 characters.')
+      .optional()
+      .or(z.literal('')),
+  })
+  .refine(
+    (data) => {
+      if (!data.newPassword && !data.confirmPassword) return true;
+
+      return data.newPassword === data.confirmPassword;
+    },
+    {
+      message: 'Passwords do not match.',
+      path: ['confirmPassword'],
+    }
+  );

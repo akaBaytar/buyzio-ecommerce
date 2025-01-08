@@ -13,6 +13,7 @@ import {
   SignUpFormSchema,
   PaymentMethodSchema,
   ShippingAddressSchema,
+  UpdateUserSchema,
 } from '@/schemas';
 
 import type { ShippingAddress, PaymentMethod, UpdateUser } from '@/types';
@@ -90,11 +91,27 @@ export const updateUser = async (user: UpdateUser) => {
 
     if (!currentUser) throw new Error('User not found.');
 
+    const updatedUser = UpdateUserSchema.parse(user);
+
+    if (
+      updatedUser.newPassword &&
+      updatedUser.newPassword === updatedUser.confirmPassword
+    ) {
+      const hashedPassword = await hash(updatedUser.newPassword);
+
+      await prisma.user.update({
+        where: { id: currentUser.id },
+        data: {
+          password: hashedPassword,
+        },
+      });
+    }
+
     await prisma.user.update({
       where: { id: currentUser.id },
       data: {
-        name: user.name,
-        email: user.email,
+        name: updatedUser.name,
+        email: updatedUser.email,
       },
     });
 
