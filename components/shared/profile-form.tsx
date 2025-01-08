@@ -58,7 +58,6 @@ const ProfileForm = () => {
   return (
     <Form {...form}>
       <form className='space-y-5' onSubmit={form.handleSubmit(onSubmit)}>
-        <h2 className='font-semibold'>User Information</h2>
         <div className='space-y-5'>
           <FormField
             control={form.control}

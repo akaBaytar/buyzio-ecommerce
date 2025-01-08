@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 import prisma from '@/database';
@@ -78,7 +79,7 @@ export const getUser = async (id: string) => {
 
   if (!user) throw new Error('User not found.');
 
-  return user;
+  return JSON.parse(JSON.stringify(user));
 };
 
 export const updateUser = async (user: UpdateUser) => {
@@ -115,6 +116,8 @@ export const updateUser = async (user: UpdateUser) => {
       },
     });
 
+    revalidatePath('/profile');
+
     return {
       success: true,
       message: 'User information updated successfully.',
@@ -144,6 +147,8 @@ export const updateUserAddress = async (data: ShippingAddress) => {
       data: { address },
     });
 
+    revalidatePath('/profile');
+
     return {
       success: true,
       message: 'Address saved successfully.',
@@ -172,6 +177,8 @@ export const updateUserPaymentMethod = async (data: PaymentMethod) => {
       where: { id: user.id },
       data: { paymentMethod: paymentMethod.type },
     });
+
+    revalidatePath('/profile');
 
     return {
       success: true,
