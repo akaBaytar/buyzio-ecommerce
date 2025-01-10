@@ -36,7 +36,6 @@ const Header = async () => {
         </div>
         <div className='flex items-center gap-2'>
           <ModeToggle />
-          <UserButton />
           <Button variant='outline' size='icon' title='Search for products'>
             <SearchIcon />
           </Button>
@@ -55,6 +54,7 @@ const Header = async () => {
               ) : null}
             </Link>
           </Button>
+          <UserButton />
         </div>
       </div>
     </header>

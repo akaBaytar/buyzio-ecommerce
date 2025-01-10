@@ -1,7 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { UserIcon, LogOutIcon, BoxIcon, HeartIcon } from 'lucide-react';
+import {
+  BoxIcon,
+  UserIcon,
+  MenuIcon,
+  HeartIcon,
+  ShirtIcon,
+  TruckIcon,
+  UsersIcon,
+  LogOutIcon,
+  ChartBarIcon,
+} from 'lucide-react';
 
 import { Button } from '../ui/button';
 
@@ -17,8 +27,12 @@ import {
 import { auth } from '@/auth';
 import { signOutUser } from '@/actions/user.action';
 
+import type { User } from '@prisma/client';
+
 const UserButton = async () => {
   const session = await auth();
+
+  const isAdmin = (session?.user as User)?.role === 'admin';
 
   const email = session?.user?.email;
   const fullName = session?.user?.name;
@@ -43,7 +57,7 @@ const UserButton = async () => {
               variant='outline'
               size='icon'
               className='relative flex-center'>
-              <UserIcon />
+              <MenuIcon />
             </Button>
           </div>
         </DropdownMenuTrigger>
@@ -97,6 +111,39 @@ const UserButton = async () => {
               <HeartIcon className='size-4' /> Favorites List
             </Link>
           </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link
+                  href='/admin/overview'
+                  className='w-full flex items-center gap-2.5 text-xs'>
+                  <ChartBarIcon className='size-4' /> Overview
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href='/admin/products'
+                  className='w-full flex items-center gap-2.5 text-xs'>
+                  <ShirtIcon className='size-4' /> Products
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href='/admin/orders'
+                  className='w-full flex items-center gap-2.5 text-xs'>
+                  <TruckIcon className='size-4' /> Orders
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href='/admin/users'
+                  className='w-full flex items-center gap-2.5 text-xs'>
+                  <UsersIcon className='size-4' /> Users
+                </Link>
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <form action={signOutUser} className='w-full'>
