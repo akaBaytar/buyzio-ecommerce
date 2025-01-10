@@ -22,7 +22,7 @@ import PlaceOrderForm from '@/components/shared/place-order-form';
 import { auth } from '@/auth';
 import { formatCurrency } from '@/lib/utils';
 import { getUser } from '@/actions/user.action';
-import { getUserCart } from '@/actions/cart.actions';
+import { getUserCart } from '@/actions/cart.action';
 
 import type { Metadata } from 'next';
 import type { ShippingAddress } from '@/types';

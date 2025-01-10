@@ -5,7 +5,7 @@ import ShippingAddressForm from '@/components/shared/shipping-form';
 
 import { auth } from '@/auth';
 import { getUser } from '@/actions/user.action';
-import { getUserCart } from '@/actions/cart.actions';
+import { getUserCart } from '@/actions/cart.action';
 
 import type { Metadata } from 'next';
 import type { ShippingAddress } from '@/types';

@@ -1,6 +1,6 @@
 import CartTable from '@/components/shared/cart-table';
 
-import { getUserCart } from '@/actions/cart.actions';
+import { getUserCart } from '@/actions/cart.action';
 
 import type { Metadata } from 'next';
 

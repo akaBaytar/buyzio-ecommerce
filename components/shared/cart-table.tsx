@@ -22,7 +22,7 @@ import {
 
 import { useToast } from '@/hooks/use-toast';
 import { formatCurrency } from '@/lib/utils';
-import { addToCart, removeFromCart } from '@/actions/cart.actions';
+import { addToCart, removeFromCart } from '@/actions/cart.action';
 
 import type { Cart, CartItem } from '@/types';
 

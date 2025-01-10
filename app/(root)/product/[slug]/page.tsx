@@ -5,7 +5,7 @@ import AddToCart from '@/components/shared/add-to-cart';
 import { ProductPrice } from '@/components/shared/product';
 import ProductImages from '@/components/shared/product-images';
 
-import { getUserCart } from '@/actions/cart.actions';
+import { getUserCart } from '@/actions/cart.action';
 import { getProductBySlug } from '@/actions/product.action';
 
 type PageProps = {

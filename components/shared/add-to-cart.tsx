@@ -10,7 +10,7 @@ import { ToastAction } from '../ui/toast';
 
 import { useToast } from '@/hooks/use-toast';
 
-import { addToCart, removeFromCart } from '@/actions/cart.actions';
+import { addToCart, removeFromCart } from '@/actions/cart.action';
 
 import type { Cart, CartItem } from '@/types';
 

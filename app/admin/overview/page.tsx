@@ -21,7 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Charts from '@/components/layout/charts';
 
 import { auth } from '@/auth';
-import { getSummary } from '@/actions/order.action';
+import { getSummary } from '@/actions/admin.action';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 import type { Metadata } from 'next';

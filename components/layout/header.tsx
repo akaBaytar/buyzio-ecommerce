@@ -9,7 +9,7 @@ import ModeToggle from '../shared/mode-toggle';
 import UserButton from '../shared/user-button';
 
 import { APP_NAME } from '@/constants';
-import { getUserCart } from '@/actions/cart.actions';
+import { getUserCart } from '@/actions/cart.action';
 
 const Header = async () => {
   const cart = await getUserCart();
