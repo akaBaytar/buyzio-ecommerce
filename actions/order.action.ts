@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 
 import prisma from '@/database';
 
@@ -119,8 +119,13 @@ export const getOrder = async (id: string) => {
 
   const userId = session.user?.id;
 
+  const isAdmin = (session?.user as User)?.role === 'admin';
+
   const order = await prisma.order.findUnique({
-    where: { id, userId },
+    where: {
+      id,
+      userId: isAdmin ? undefined : userId,
+    },
     include: {
       orderItems: true,
       user: {
