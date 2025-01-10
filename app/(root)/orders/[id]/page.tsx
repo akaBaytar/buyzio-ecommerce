@@ -2,9 +2,11 @@ import { notFound } from 'next/navigation';
 
 import OrderDetailsTable from '@/components/shared/order-details-table';
 
+import { auth } from '@/auth';
 import { getOrder } from '@/actions/order.action';
 
 import type { Metadata } from 'next';
+import type { User } from '@prisma/client';
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -21,9 +23,14 @@ const OrderDetailsPage = async ({ params }: PageProps) => {
 
   if (!order) notFound();
 
+  const session = await auth();
+
+  const isAdmin = (session?.user as User)?.role === 'admin';
+
   return (
     <>
       <OrderDetailsTable
+        isAdmin={isAdmin || false}
         paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
         order={{
           ...order,

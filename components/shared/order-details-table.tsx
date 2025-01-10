@@ -1,12 +1,16 @@
 'use client';
 
+import { useTransition } from 'react';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { Loader2Icon } from 'lucide-react';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import { Badge } from '../ui/badge';
-import { Card, CardContent } from '../ui/card';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 import {
   Table,
@@ -18,17 +22,21 @@ import {
 } from '../ui/table';
 
 import { useToast } from '@/hooks/use-toast';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { createPayPalOrder, approvePayPalOrder } from '@/actions/order.action';
+import { markOrderAsPaid, markOrderAsDelivered } from '@/actions/admin.action';
 
 import type { Order } from '@/types';
 
 type PropTypes = {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 };
 
-const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
+const OrderDetailsTable = ({ order, isAdmin, paypalClientId }: PropTypes) => {
+  const [isPending, startTransition] = useTransition();
+
   const { toast } = useToast();
 
   const {
@@ -58,6 +66,22 @@ const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
     const res = await approvePayPalOrder(order.id, data);
 
     toast({ description: res.message });
+  };
+
+  const markAsPaid = () => {
+    startTransition(async () => {
+      const response = await markOrderAsPaid(id);
+
+      toast({ description: response.message });
+    });
+  };
+
+  const markAsDelivered = () => {
+    startTransition(async () => {
+      const response = await markOrderAsDelivered(id);
+
+      toast({ description: response.message });
+    });
   };
 
   return (
@@ -154,7 +178,7 @@ const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
             </CardContent>
           </Card>
         </div>
-        <div className='lg:col-span-2'>
+        <div className={cn('lg:col-span-2', isAdmin && 'space-y-5')}>
           <Card className='border-input'>
             <CardContent className='p-5 space-y-5'>
               <h2 className='font-semibold'>Amount</h2>
@@ -210,6 +234,46 @@ const OrderDetailsTable = ({ order, paypalClientId }: PropTypes) => {
               )}
             </CardContent>
           </Card>
+          {!isPaid && isAdmin && (
+            <Card className='border-input'>
+              <CardHeader>
+                <CardTitle>Order Processes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  variant='outline'
+                  disabled={isPending}
+                  onClick={markAsPaid}
+                  className='w-full'>
+                  {isPending ? (
+                    <Loader2Icon className='size-4 animate-spin' />
+                  ) : (
+                    'Mark as Paid'
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+          {isPaid && !isDelivered && isAdmin && (
+            <Card className='border-input'>
+              <CardHeader>
+                <CardTitle>Order Processes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  variant='outline'
+                  disabled={isPending}
+                  onClick={markAsDelivered}
+                  className='w-full'>
+                  {isPending ? (
+                    <Loader2Icon className='size-4 animate-spin' />
+                  ) : (
+                    'Mark as Delivered'
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </>
