@@ -1,6 +1,9 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import prisma from '@/database';
+import { handleError } from '@/lib/utils';
 
 import { Prisma } from '@prisma/client';
 
@@ -60,4 +63,34 @@ export const getAllOrders = async ({ page, limit }: GetAllOrders) => {
     orderCount,
     orders: JSON.parse(JSON.stringify(orders)),
   };
+};
+
+export const removeOrder = async (id: string) => {
+  try {
+    const order = await prisma.order.findUnique({ where: { id } });
+
+    if (!order) throw new Error('Order not found.');
+
+    await prisma.$transaction([
+      prisma.orderItem.deleteMany({
+        where: { orderId: order.id },
+      }),
+
+      prisma.order.delete({
+        where: { id: order.id },
+      }),
+    ]);
+
+    revalidatePath('/admin/orders');
+
+    return {
+      success: true,
+      message: 'Order removed successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };

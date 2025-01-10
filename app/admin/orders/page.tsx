@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { EyeIcon, TrashIcon } from 'lucide-react';
+import { EyeIcon } from 'lucide-react';
 
 import {
   Table,
@@ -15,9 +15,10 @@ import {
 import { Button } from '@/components/ui/button';
 
 import Pagination from '@/components/shared/pagination';
+import RemoveDialog from '@/components/shared/remove-dialog';
 
 import { auth } from '@/auth';
-import { getAllOrders } from '@/actions/admin.action';
+import { getAllOrders, removeOrder } from '@/actions/admin.action';
 import { formatCurrency, formatDate, formatID } from '@/lib/utils';
 
 import type { Metadata } from 'next';
@@ -92,9 +93,7 @@ const AllOrdersPage = async ({ searchParams }: PageProps) => {
                     <EyeIcon />
                   </Link>
                 </Button>
-                <Button size='icon' variant='outline' title='Remove Order'>
-                  <TrashIcon />
-                </Button>
+                <RemoveDialog id={order.id} action={removeOrder} />
               </TableCell>
             </TableRow>
           ))}
