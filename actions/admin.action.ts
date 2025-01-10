@@ -2,10 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { Prisma } from '@prisma/client';
+
 import prisma from '@/database';
 import { handleError } from '@/lib/utils';
-
-import { Prisma } from '@prisma/client';
+import { updateOrderAsPaid } from '@/actions/order.action';
 
 type GetAllOrders = {
   page: number;
@@ -86,6 +87,54 @@ export const removeOrder = async (id: string) => {
     return {
       success: true,
       message: 'Order removed successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const markOrderAsPaid = async (id: string) => {
+  try {
+    await updateOrderAsPaid({ id });
+
+    revalidatePath(`/orders/${id}`);
+
+    return {
+      success: true,
+      message: 'Order updated as paid successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const markOrderAsDelivered = async (id: string) => {
+  try {
+    const order = await prisma.order.findUnique({ where: { id } });
+
+    if (!order) throw new Error('Order not found.');
+
+    if (!order.isPaid) throw new Error('Order is not paid.');
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        isDelivered: true,
+        deliveredAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/orders/${order.id}`);
+
+    return {
+      success: true,
+      message: 'Order updated as delivered successfully.',
     };
   } catch (error) {
     return {
