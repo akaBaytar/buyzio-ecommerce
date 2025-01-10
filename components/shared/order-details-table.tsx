@@ -234,26 +234,29 @@ const OrderDetailsTable = ({ order, isAdmin, paypalClientId }: PropTypes) => {
               )}
             </CardContent>
           </Card>
-          {!isPaid && isAdmin && (
-            <Card className='border-input'>
-              <CardHeader>
-                <CardTitle>Order Processes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Button
-                  variant='outline'
-                  disabled={isPending}
-                  onClick={markAsPaid}
-                  className='w-full'>
-                  {isPending ? (
-                    <Loader2Icon className='size-4 animate-spin' />
-                  ) : (
-                    'Mark as Paid'
-                  )}
-                </Button>
-              </CardContent>
-            </Card>
-          )}
+          {!isPaid &&
+            isAdmin &&
+            paymentMethod !== 'Paypal' &&
+            paymentMethod !== 'Credit Card' && (
+              <Card className='border-input'>
+                <CardHeader>
+                  <CardTitle>Order Processes</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Button
+                    variant='outline'
+                    disabled={isPending}
+                    onClick={markAsPaid}
+                    className='w-full'>
+                    {isPending ? (
+                      <Loader2Icon className='size-4 animate-spin' />
+                    ) : (
+                      'Mark as Paid'
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           {isPaid && !isDelivered && isAdmin && (
             <Card className='border-input'>
               <CardHeader>
