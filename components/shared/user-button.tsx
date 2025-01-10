@@ -132,14 +132,14 @@ const UserButton = async () => {
                 <Link
                   href='/admin/orders'
                   className='w-full flex items-center gap-2.5 text-xs'>
-                  <TruckIcon className='size-4' /> Orders
+                  <TruckIcon className='size-4' /> All Orders
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
                   href='/admin/users'
                   className='w-full flex items-center gap-2.5 text-xs'>
-                  <UsersIcon className='size-4' /> Users
+                  <UsersIcon className='size-4' /> Customers
                 </Link>
               </DropdownMenuItem>
             </>

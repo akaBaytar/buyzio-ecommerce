@@ -120,7 +120,7 @@ const OverviewPage = async () => {
                       <TableCell>{formatDate(createdAt).dateAndTime}</TableCell>
                       <TableCell>{formatCurrency(+totalPrice)}</TableCell>
                       <TableCell>
-                        <Link href={`/orders/${id}`}>Details</Link>
+                        <Link href={`/orders/${id}`}>Show Details</Link>
                       </TableCell>
                     </TableRow>
                   )
