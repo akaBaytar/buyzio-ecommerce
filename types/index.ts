@@ -12,8 +12,6 @@ import {
   ShippingAddressSchema,
 } from '@/schemas';
 
-import type { Product } from '@prisma/client';
-
 export type ListTypes = {
   products: Product[];
   title?: string;
@@ -22,6 +20,13 @@ export type ListTypes = {
 export type PriceTypes = {
   value: number;
   className?: string;
+};
+
+export type Product = z.infer<typeof AddProductSchema> & {
+  id: string;
+  rating: string;
+  numReviews: number;
+  createdAt: Date;
 };
 
 export type User = {

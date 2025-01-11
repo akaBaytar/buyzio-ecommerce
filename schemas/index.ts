@@ -13,7 +13,7 @@ export const AddProductSchema = z.object({
   stock: z.coerce.number(),
   images: z.array(z.string()).min(1, 'Product must have at least one image.'),
   isFeatured: z.boolean(),
-  banner: z.optional(z.string()),
+  banner: z.string().nullable(),
   price: z.number(),
 });
 

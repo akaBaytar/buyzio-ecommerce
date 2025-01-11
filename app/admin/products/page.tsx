@@ -55,7 +55,7 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
         <h1 className='h2-bold'>All Products</h1>
         <div className='flex gap-2'>
           <Button asChild variant='outline' size='icon' title='Add New Product'>
-            <Link href='/admin/products/create'>
+            <Link href='/admin/products/add'>
               <PlusIcon className='size-4' />
             </Link>
           </Button>
