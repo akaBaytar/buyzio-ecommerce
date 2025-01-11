@@ -83,7 +83,7 @@ const AllOrdersPage = async ({ searchParams }: PageProps) => {
                   ? formatDate(order.deliveredAt as Date).date
                   : 'Not delivered'}
               </TableCell>
-              <TableCell className='space-x-1'>
+              <TableCell className='space-x-2'>
                 <Button
                   asChild
                   size='icon'

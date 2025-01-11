@@ -21,10 +21,11 @@ import { useToast } from '@/hooks/use-toast';
 
 type PropTypes = {
   id: string;
+  page?: string;
   action: (id: string) => Promise<{ success: boolean; message: string }>;
 };
 
-const RemoveDialog = ({ id, action }: PropTypes) => {
+const RemoveDialog = ({ id, page, action }: PropTypes) => {
   const [open, setOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
@@ -45,7 +46,7 @@ const RemoveDialog = ({ id, action }: PropTypes) => {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild title='Remove Order'>
+      <AlertDialogTrigger asChild title={`Remove ${page || 'Order'}`}>
         <Button size='icon' variant='outline'>
           <TrashIcon />
         </Button>

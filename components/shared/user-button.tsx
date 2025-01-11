@@ -27,20 +27,20 @@ import {
 import { auth } from '@/auth';
 import { getUser, signOutUser } from '@/actions/user.action';
 
-import type { User } from '@prisma/client';
-
 const UserButton = async () => {
   const session = await auth();
 
-  const user: User = await getUser(session?.user?.id as string);
+  const userId = session?.user?.id;
 
-  const isAdmin = user.role === 'admin';
+  const user = userId && (await getUser(userId));
 
-  const email = user.email;
-  const fullName = user.name;
-  const userImg = user.image;
+  const isAdmin = user?.role === 'admin';
 
-  if (!session) {
+  const email = user?.email;
+  const fullName = user?.name;
+  const userImg = user?.image;
+
+  if (!session || !userId) {
     return (
       <Button asChild variant='outline' size='icon' title='Sign in'>
         <Link href='/sign-in'>

@@ -11,7 +11,7 @@ import { AddProductSchema, UpdateProductSchema } from '@/schemas';
 import type { Prisma } from '@prisma/client';
 import type { AddProduct, UpdateProduct } from '@/types';
 
-type GetAllOrders = {
+type ActionTypes = {
   page: number;
   limit?: number;
 };
@@ -50,7 +50,7 @@ export const getSummary = async () => {
   };
 };
 
-export const getAllOrders = async ({ page, limit }: GetAllOrders) => {
+export const getAllOrders = async ({ page, limit }: ActionTypes) => {
   const orders = await prisma.order.findMany({
     orderBy: { updatedAt: 'desc' },
     take: limit,
@@ -215,6 +215,53 @@ export const removeProduct = async (id: string) => {
     return {
       success: true,
       message: 'Product removed successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const getAllUsers = async ({ limit, page }: ActionTypes) => {
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * (limit || 10),
+  });
+
+  const userCount = await prisma.user.count();
+
+  const totalPages = Math.ceil(userCount / (limit || 10));
+
+  return {
+    totalPages,
+    userCount,
+    users: JSON.parse(JSON.stringify(users)),
+  };
+};
+
+export const removeUser = async (id: string) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+
+    if (!user) throw new Error('User not found.');
+
+    await prisma.$transaction([
+      prisma.cart.deleteMany({ where: { userId: user.id } }),
+      prisma.orderItem.deleteMany({ where: { order: { userId: user.id } } }),
+      prisma.order.deleteMany({ where: { userId: user.id } }),
+      prisma.session.deleteMany({ where: { userId: user.id } }),
+      prisma.account.deleteMany({ where: { userId: user.id } }),
+      prisma.user.delete({ where: { id: user.id } }),
+    ]);
+
+    revalidatePath('/admin/users');
+
+    return {
+      success: true,
+      message: 'User Account removed successfully.',
     };
   } catch (error) {
     return {

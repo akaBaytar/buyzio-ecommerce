@@ -94,7 +94,7 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
               <TableCell className='truncate'>{product.category}</TableCell>
               <TableCell>{product.stock}</TableCell>
               <TableCell>{+product.rating}</TableCell>
-              <TableCell className='space-x-1'>
+              <TableCell className='space-x-2'>
                 <Button
                   asChild
                   size='icon'
