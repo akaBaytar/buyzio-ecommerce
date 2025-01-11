@@ -36,12 +36,18 @@ type PropTypes = {
   type: 'Add Product' | 'Update Product';
   product?: Product;
   productId?: string;
+  productImages?: string[];
 };
 
-const ProductForm = ({ type, product, productId }: PropTypes) => {
+const ProductForm = ({
+  type,
+  product,
+  productId,
+  productImages,
+}: PropTypes) => {
   const router = useRouter();
 
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>(productImages || []);
 
   const { toast } = useToast();
 
@@ -61,7 +67,7 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
             description: '',
             images: [],
             isFeatured: false,
-            price: 0,
+            price: '0',
             stock: 0,
             slug: '',
           },
@@ -98,9 +104,13 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
       } else {
         const response = await updateProduct({ ...values, id: productId });
 
-        toast({ description: response.message });
+        if (response.success) {
+          toast({ description: response.message });
 
-        router.push(`/admin/products`);
+          router.push(`/admin/products`);
+        } else {
+          toast({ description: response.message });
+        }
       }
     }
   };
@@ -214,7 +224,7 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
                     {...field}
                     type='number'
                     min={0}
-                    step={5}
+                    step={0.01}
                     className='text-sm'
                   />
                 </FormControl>
@@ -229,13 +239,7 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
               <FormItem className='w-full'>
                 <FormLabel>Stock:</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    type='number'
-                    min={0}
-                    step={5}
-                    className='text-sm'
-                  />
+                  <Input {...field} type='number' min={0} className='text-sm' />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -246,54 +250,57 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
           control={form.control}
           name='images'
           render={() => (
-            <>
-              <div
-                className={cn(
-                  images.length > 0 &&
-                    'flex items-center gap-5 border border-input rounded-md p-5'
-                )}>
-                {images.map((img, idx) => (
-                  <Image
-                    priority
-                    key={idx}
-                    src={img}
-                    width={500}
-                    height={500}
-                    alt={`Product image (${idx})`}
-                    className='w-[calc(33%-10px)] max-h-56 object-cover rounded-md'
-                  />
-                ))}
-              </div>
-              <FormItem className='w-full'>
-                <FormLabel>Product Images:</FormLabel>
-                <FormControl>
-                  <UploadDropzone
-                    endpoint='imageUploader'
-                    onClientUploadComplete={(res: { url: string }[]) => {
-                      if (images.length + res.length > 3) {
-                        toast({
-                          description: 'A maximum of 3 images can be uploaded.',
-                        });
-                      } else {
-                        setImages((prev) => [
-                          ...prev,
-                          ...res.map((r) => r.url),
-                        ]);
-                        form.setValue('images', [
-                          ...images,
-                          ...res.map((r) => r.url),
-                        ]);
-                      }
-                    }}
-                    onUploadError={(err: Error) => {
-                      toast({ description: err.message });
-                    }}
-                    className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </>
+            <FormItem className='w-full'>
+              <FormLabel>Product Images:</FormLabel>
+              <FormControl>
+                <div className='space-y-5'>
+                  <div
+                    className={cn(
+                      images.length > 0 &&
+                        'flex items-center gap-5 border border-input rounded-md p-5'
+                    )}>
+                    {images.map((img, idx) => (
+                      <Image
+                        priority
+                        key={idx}
+                        src={img}
+                        width={500}
+                        height={500}
+                        alt={`Product image (${idx})`}
+                        className='w-[calc(33%-10px)] max-h-56 object-contain rounded-md'
+                      />
+                    ))}
+                  </div>
+                  {type === 'Add Product' && (
+                    <UploadDropzone
+                      endpoint='imageUploader'
+                      onClientUploadComplete={(res: { url: string }[]) => {
+                        if (images.length + res.length > 3) {
+                          toast({
+                            description:
+                              'A maximum of 3 images can be uploaded.',
+                          });
+                        } else {
+                          setImages((prev) => [
+                            ...prev,
+                            ...res.map((r) => r.url),
+                          ]);
+                          form.setValue('images', [
+                            ...images,
+                            ...res.map((r) => r.url),
+                          ]);
+                        }
+                      }}
+                      onUploadError={(err: Error) => {
+                        toast({ description: err.message });
+                      }}
+                      className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
+                    />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
         <Button type='submit' disabled={isSubmitting} className='w-full'>

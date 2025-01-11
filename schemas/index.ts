@@ -14,7 +14,7 @@ export const AddProductSchema = z.object({
   images: z.array(z.string()).min(1, 'Product must have at least one image.'),
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
-  price: z.number(),
+  price: z.number().or(z.string()),
 });
 
 export const UpdateProductSchema = AddProductSchema.extend({

@@ -52,7 +52,7 @@ export const getSummary = async () => {
 
 export const getAllOrders = async ({ page, limit }: GetAllOrders) => {
   const orders = await prisma.order.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { updatedAt: 'desc' },
     take: limit,
     skip: (page - 1) * (limit || 10),
     include: { user: { select: { name: true } } },

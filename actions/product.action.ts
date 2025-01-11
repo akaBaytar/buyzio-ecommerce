@@ -28,7 +28,7 @@ export const getProductBySlug = async (slug: string) => {
 
   if (!product) notFound();
 
-  return product;
+  return JSON.parse(JSON.stringify(product));
 };
 
 export const getAllProducts = async ({
