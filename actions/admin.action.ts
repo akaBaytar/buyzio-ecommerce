@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import prisma from '@/database';
 import { handleError } from '@/lib/utils';
+import { utapi } from '@/server/uploadthing';
 import { updateOrderAsPaid } from '@/actions/order.action';
 import { AddProductSchema, UpdateProductSchema } from '@/schemas';
 
@@ -200,6 +201,12 @@ export const removeProduct = async (id: string) => {
     const product = await prisma.product.findUnique({ where: { id } });
 
     if (!product) throw new Error('Product not found.');
+
+    const images = product.images;
+
+    const imageIds = images.map((url: string) => url.split('/').pop());
+
+    await utapi.deleteFiles(imageIds as string[]);
 
     await prisma.product.delete({ where: { id: product.id } });
 
