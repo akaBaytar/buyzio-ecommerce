@@ -143,3 +143,25 @@ export const markOrderAsDelivered = async (id: string) => {
     };
   }
 };
+
+export const removeProduct = async (id: string) => {
+  try {
+    const product = await prisma.product.findUnique({ where: { id } });
+
+    if (!product) throw new Error('Product not found.');
+
+    await prisma.product.delete({ where: { id: product.id } });
+
+    revalidatePath('/admin/products');
+
+    return {
+      success: true,
+      message: 'Product removed successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};

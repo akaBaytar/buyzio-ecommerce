@@ -8,12 +8,18 @@ import { Button } from '../ui/button';
 import { handleURLQuery } from '@/lib/utils';
 
 type PropTypes = {
+  text?: boolean;
   page: number;
   totalPages: number;
   urlParamName?: string;
 };
 
-const Pagination = ({ page, totalPages, urlParamName }: PropTypes) => {
+const Pagination = ({
+  page,
+  totalPages,
+  urlParamName,
+  text = true,
+}: PropTypes) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -32,19 +38,21 @@ const Pagination = ({ page, totalPages, urlParamName }: PropTypes) => {
   return (
     <div className='flex items-center gap-2'>
       <Button
-        size='sm'
+        size={text ? 'sm' : 'icon'}
         variant='outline'
         disabled={page <= 1}
+        title='Show Previous Page'
         onClick={() => onClick('prev')}>
         <ChevronLeftIcon className='size-4' />
-        Previous
+        {text && 'Previous'}
       </Button>
       <Button
-        size='sm'
+        size={text ? 'sm' : 'icon'}
         variant='outline'
         disabled={page >= totalPages}
+        title='Show Next Page'
         onClick={() => onClick('next')}>
-        Next
+        {text && 'Next'}
         <ChevronRightIcon className='size-4' />
       </Button>
     </div>
