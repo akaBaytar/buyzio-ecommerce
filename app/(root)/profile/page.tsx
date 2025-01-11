@@ -24,6 +24,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 import ProfileForm from '@/components/shared/profile-form';
+import AvatarUploader from '@/components/shared/avatar-uploader';
 import ProfileAddressForm from '@/components/shared/profile-address-form';
 import ProfilePaymentMethod from '@/components/shared/profile-payment-method';
 
@@ -51,28 +52,32 @@ const ProfilePage = async () => {
           <CardHeader>
             <div className='flex-between'>
               <CardTitle>Personal Information</CardTitle>
-              <Dialog>
-                <DialogTrigger
-                  asChild
-                  className='flex items-center text-sm gap-1 p-2.5 rounded-md border border-input'>
-                  <Button variant='outline'>
-                    <EditIcon className='size-4' />
-                    Personal Details
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className='border-input'>
-                  <DialogHeader>
-                    <DialogTitle className='text-start'>
-                      Personal Information
-                    </DialogTitle>
-                    <DialogDescription className='text-start'>
-                      You can change your email and full name without a password
-                      or if you wish, you can set a new password.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <ProfileForm />
-                </DialogContent>
-              </Dialog>
+              <div className='flex items-center gap-2.5'>
+                <AvatarUploader />
+                <Dialog>
+                  <DialogTrigger
+                    asChild
+                    title='Change Personal Details'
+                    className='flex items-center text-sm gap-1 p-2.5 rounded-md border border-input'>
+                    <Button variant='outline'>
+                      <EditIcon className='size-4' />
+                      <span className='hidden md:flex'>Personal Details</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className='border-input'>
+                    <DialogHeader>
+                      <DialogTitle className='text-start'>
+                        Personal Information
+                      </DialogTitle>
+                      <DialogDescription className='text-start'>
+                        You can change your email and full name without a
+                        password or if you wish, you can set a new password.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <ProfileForm />
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
             <CardDescription>
               You can view your personal information and change it if you wish.
@@ -103,9 +108,11 @@ const ProfilePage = async () => {
                   <DialogTrigger
                     asChild
                     className='flex items-center text-sm gap-1 p-2.5 rounded-md border border-input'>
-                    <Button variant='outline'>
+                    <Button
+                      variant='outline'
+                      title='Change Default Shipping Address'>
                       <EditIcon className='size-4' />
-                      Shipping Address
+                      <span className='hidden md:flex'>Shipping Address</span>
                     </Button>
                   </DialogTrigger>
                   <DialogContent className='border-input'>
@@ -145,9 +152,11 @@ const ProfilePage = async () => {
                   <DialogTrigger
                     asChild
                     className='flex items-center text-sm gap-1 p-2.5 rounded-md border border-input'>
-                    <Button variant='outline'>
+                    <Button
+                      variant='outline'
+                      title='Change Default Payment Method'>
                       <EditIcon className='size-4' />
-                      Payment Method
+                      <span className='hidden md:flex'>Payment Method</span>
                     </Button>
                   </DialogTrigger>
                   <DialogContent className='border-input'>

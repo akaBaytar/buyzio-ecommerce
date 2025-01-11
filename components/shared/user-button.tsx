@@ -25,18 +25,20 @@ import {
 } from '../ui/dropdown-menu';
 
 import { auth } from '@/auth';
-import { signOutUser } from '@/actions/user.action';
+import { getUser, signOutUser } from '@/actions/user.action';
 
 import type { User } from '@prisma/client';
 
 const UserButton = async () => {
   const session = await auth();
 
-  const isAdmin = (session?.user as User)?.role === 'admin';
+  const user: User = await getUser(session?.user?.id as string);
 
-  const email = session?.user?.email;
-  const fullName = session?.user?.name;
-  const userImg = session?.user?.image;
+  const isAdmin = user.role === 'admin';
+
+  const email = user.email;
+  const fullName = user.name;
+  const userImg = user.image;
 
   if (!session) {
     return (
@@ -64,23 +66,13 @@ const UserButton = async () => {
         <DropdownMenuContent align='end' className='border-input p-2.5 mt-1.5'>
           <DropdownMenuLabel className='font-normal'>
             <div className='flex items-center gap-2.5'>
-              {userImg ? (
-                <Image
-                  src={userImg}
-                  alt='User Avatar'
-                  width={26}
-                  height={26}
-                  className='rounded object-cover object-center aspect-square'
-                />
-              ) : (
-                <Image
-                  src='/user.png'
-                  alt='User Avatar'
-                  width={26}
-                  height={26}
-                  className='rounded object-cover object-center aspect-square'
-                />
-              )}
+              <Image
+                src={userImg || '/user.png'}
+                alt='User Avatar'
+                width={26}
+                height={26}
+                className='rounded object-cover object-center aspect-square'
+              />
               <div className='flex flex-col gap-0.5'>
                 <p className='text-xs leading-none line-clamp-1'>{fullName}</p>
                 <p className='text-xs text-muted-foreground leading-none line-clamp-1'>

@@ -7,6 +7,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import prisma from '@/database';
 import { hash } from '@/lib/encrypt';
 import { handleError } from '@/lib/utils';
+import { utapi } from '@/server/uploadthing';
 import { auth, signIn, signOut } from '@/auth';
 
 import {
@@ -183,6 +184,41 @@ export const updateUserPaymentMethod = async (data: PaymentMethod) => {
     return {
       success: true,
       message: 'Payment method updated successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const updateUserAvatar = async (imageUrl: string) => {
+  try {
+    const session = await auth();
+
+    const userId = session?.user?.id;
+
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!currentUser) throw new Error('User not found.');
+
+    const currentImgId = currentUser?.image?.split('/').pop();
+
+    if (currentImgId) await utapi.deleteFiles(currentImgId);
+
+    await prisma.user.update({
+      where: { id: currentUser.id },
+      data: { image: imageUrl },
+    });
+
+    revalidatePath('/profile');
+
+    return {
+      success: true,
+      message: 'User Avatar updated successfully.',
     };
   } catch (error) {
     return {

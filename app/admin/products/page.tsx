@@ -54,9 +54,14 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
       <div className='flex-between'>
         <h1 className='h2-bold'>All Products</h1>
         <div className='flex gap-2'>
-          <Button asChild variant='outline' size='icon' title='Add New Product'>
+          <Button
+            asChild
+            variant='outline'
+            size={totalPages === 1 ? 'default' : 'icon'}
+            title='Add New Product'>
             <Link href='/admin/products/add'>
               <PlusIcon className='size-4' />
+              {totalPages === 1 && 'Add Product'}
             </Link>
           </Button>
           {totalPages && totalPages > 1 && (

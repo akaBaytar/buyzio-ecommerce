@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import slugify from 'slugify';
 import { useForm } from 'react-hook-form';
-import { Loader2Icon } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ImagePlusIcon, Loader2Icon } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -274,6 +274,40 @@ const ProductForm = ({
                   {type === 'Add Product' && (
                     <UploadDropzone
                       endpoint='imageUploader'
+                      content={{
+                        button({ ready }) {
+                          if (ready)
+                            return (
+                              <p className='flex items-center gap-2'>
+                                <ImagePlusIcon className='size-4' />
+                                Upload
+                              </p>
+                            );
+
+                          return (
+                            <Loader2Icon className='size-4 animate-spin' />
+                          );
+                        },
+                        label({ ready }) {
+                          if (ready)
+                            return (
+                              <p className='text-xs'>
+                                Choose files or drag and drop
+                              </p>
+                            );
+
+                          return (
+                            <Loader2Icon className='size-4 animate-spin' />
+                          );
+                        },
+                        allowedContent() {
+                          return (
+                            <p className='text-muted-foreground'>
+                              Images up to 4MB, max 3.
+                            </p>
+                          );
+                        },
+                      }}
                       onClientUploadComplete={(res: { url: string }[]) => {
                         if (images.length + res.length > 3) {
                           toast({
@@ -294,7 +328,7 @@ const ProductForm = ({
                       onUploadError={(err: Error) => {
                         toast({ description: err.message });
                       }}
-                      className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
+                      className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:hover:bg-primary ut-button:ut-uploading:bg-secondary ut-button:text-primary ut-button:hover:text-primary-foreground ut-button:text-sm ut-label:text-muted-foreground'
                     />
                   )}
                 </div>
