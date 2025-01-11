@@ -5,6 +5,8 @@
     "Buyzio",
     "datasource",
     "dbgenerated",
-    "ecommerce"
+    "ecommerce",
+    "uploadthing",
+    "utfs"
   ]
 }
