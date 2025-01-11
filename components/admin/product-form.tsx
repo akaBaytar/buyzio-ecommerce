@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { z } from 'zod';
 import slugify from 'slugify';
+import { useForm } from 'react-hook-form';
 import { Loader2Icon } from 'lucide-react';
-import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '../ui/input';
@@ -22,7 +24,9 @@ import {
   FormMessage,
 } from '../ui/form';
 
+import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { UploadDropzone } from '@/lib/uploadthing';
 import { AddProductSchema, UpdateProductSchema } from '@/schemas';
 import { addProduct, updateProduct } from '@/actions/admin.action';
 
@@ -36,6 +40,8 @@ type PropTypes = {
 
 const ProductForm = ({ type, product, productId }: PropTypes) => {
   const router = useRouter();
+
+  const [images, setImages] = useState<string[]>([]);
 
   const { toast } = useToast();
 
@@ -61,7 +67,7 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
           },
   });
 
-  const name = useWatch({ control: form.control, name: 'name' });
+  const name = form.watch('name');
 
   const isSubmitting = form.formState.isSubmitting;
 
@@ -77,9 +83,13 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
     if (type === 'Add Product') {
       const response = await addProduct(values);
 
-      toast({ description: response.message });
+      if (response.success) {
+        toast({ description: response.message });
 
-      router.push(`/product/${values.slug}`);
+        router.push(`/product/${values.slug}`);
+      } else {
+        toast({ description: response.message });
+      }
     }
 
     if (type === 'Update Product') {
@@ -232,6 +242,60 @@ const ProductForm = ({ type, product, productId }: PropTypes) => {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name='images'
+          render={() => (
+            <>
+              <div
+                className={cn(
+                  images.length > 0 &&
+                    'flex items-center gap-5 border border-input rounded-md p-5'
+                )}>
+                {images.map((img, idx) => (
+                  <Image
+                    priority
+                    key={idx}
+                    src={img}
+                    width={500}
+                    height={500}
+                    alt={`Product image (${idx})`}
+                    className='w-[calc(33%-10px)] max-h-56 object-cover rounded-md'
+                  />
+                ))}
+              </div>
+              <FormItem className='w-full'>
+                <FormLabel>Product Images:</FormLabel>
+                <FormControl>
+                  <UploadDropzone
+                    endpoint='imageUploader'
+                    onClientUploadComplete={(res: { url: string }[]) => {
+                      if (images.length + res.length > 3) {
+                        toast({
+                          description: 'A maximum of 3 images can be uploaded.',
+                        });
+                      } else {
+                        setImages((prev) => [
+                          ...prev,
+                          ...res.map((r) => r.url),
+                        ]);
+                        form.setValue('images', [
+                          ...images,
+                          ...res.map((r) => r.url),
+                        ]);
+                      }
+                    }}
+                    onUploadError={(err: Error) => {
+                      toast({ description: err.message });
+                    }}
+                    className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </>
+          )}
+        />
         <Button type='submit' disabled={isSubmitting} className='w-full'>
           {isSubmitting ? (
             <Loader2Icon className='size-4 animate-spin' />
