@@ -83,7 +83,7 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
         <TableBody>
           {products?.map((product: Product) => (
             <TableRow key={product.id} className='text-xs border-input'>
-              <TableCell>{formatID(product.id)}</TableCell>
+              <TableCell title={product.id}>{formatID(product.id)}</TableCell>
               <TableCell className='truncate'>{product.name}</TableCell>
               <TableCell>{formatCurrency(+product.price)}</TableCell>
               <TableCell className='truncate'>{product.category}</TableCell>
@@ -104,7 +104,7 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
                   size='icon'
                   variant='outline'
                   title='Edit Product Details'>
-                  <Link href={`/admin/products/${product.id}`}>
+                  <Link href={`/admin/products/${product.slug}`}>
                     <EditIcon />
                   </Link>
                 </Button>

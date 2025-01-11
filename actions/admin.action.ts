@@ -2,11 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { Prisma } from '@prisma/client';
-
 import prisma from '@/database';
 import { handleError } from '@/lib/utils';
 import { updateOrderAsPaid } from '@/actions/order.action';
+import { AddProductSchema, UpdateProductSchema } from '@/schemas';
+
+import type { Prisma } from '@prisma/client';
+import type { AddProduct, UpdateProduct } from '@/types';
 
 type GetAllOrders = {
   page: number;
@@ -135,6 +137,55 @@ export const markOrderAsDelivered = async (id: string) => {
     return {
       success: true,
       message: 'Order updated as delivered successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const addProduct = async (data: AddProduct) => {
+  try {
+    const product = AddProductSchema.parse(data);
+
+    await prisma.product.create({ data: product });
+
+    revalidatePath('/admin/products');
+
+    return {
+      success: true,
+      message: handleError('Product added successfully.'),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
+};
+
+export const updateProduct = async (data: UpdateProduct) => {
+  try {
+    const product = UpdateProductSchema.parse(data);
+
+    const updatedProduct = await prisma.product.findUnique({
+      where: { id: product.id },
+    });
+
+    if (!updatedProduct) throw new Error('Product not found.');
+
+    await prisma.product.update({
+      where: { id: product.id },
+      data: product,
+    });
+
+    revalidatePath('/admin/products');
+
+    return {
+      success: true,
+      message: handleError('Product updated successfully.'),
     };
   } catch (error) {
     return {

@@ -4,7 +4,9 @@ import {
   AddOrderSchema,
   CartItemSchema,
   UpdateUserSchema,
+  AddProductSchema,
   AddOrderItemSchema,
+  UpdateProductSchema,
   PaymentResultSchema,
   PaymentMethodSchema,
   ShippingAddressSchema,
@@ -72,3 +74,7 @@ export type Order = z.infer<typeof AddOrderSchema> & {
 export type PaymentResult = z.infer<typeof PaymentResultSchema>;
 
 export type UpdateUser = z.infer<typeof UpdateUserSchema>;
+
+export type AddProduct = z.infer<typeof AddProductSchema>;
+
+export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
