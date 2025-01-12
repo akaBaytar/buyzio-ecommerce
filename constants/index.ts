@@ -26,3 +26,7 @@ export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
 export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES.split(', ')
   : ['admin', 'user'];
+
+export const SEARCH_PATHS = process.env.SEARCH_PATHS
+  ? process.env.SEARCH_PATHS.split(', ')
+  : ['products', 'users', 'orders'];

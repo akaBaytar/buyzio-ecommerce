@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { EditIcon, EyeIcon, PlusIcon } from 'lucide-react';
+import { EditIcon, EyeIcon, PlusIcon, FilterXIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -52,7 +52,21 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
   return (
     <div className='space-y-5'>
       <div className='flex-between'>
-        <h1 className='h2-bold'>All Products</h1>
+        <h1 className='h2-bold'>
+          {query ? (
+            <span className='flex items-center gap-2.5'>
+              Filtered Products
+              <Link
+                href='/admin/products'
+                title='Reset All Filters'
+                className='border border-input p-1 size-9 rounded-md flex-center bg-primary text-primary-foreground hover:bg-primary/90'>
+                <FilterXIcon className='size-5' />
+              </Link>
+            </span>
+          ) : (
+            'All Products'
+          )}
+        </h1>
         <div className='flex gap-2'>
           <Button
             asChild

@@ -5,13 +5,16 @@ import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
+import Search from '../admin/search';
 import ModeToggle from '../shared/mode-toggle';
 import UserButton from '../shared/user-button';
 
 import { APP_NAME } from '@/constants';
 import { getUserCart } from '@/actions/cart.action';
 
-const Header = async () => {
+type PropType = { adminLayout?: boolean };
+
+const Header = async ({ adminLayout = false }: PropType) => {
   const cart = await getUserCart();
 
   const itemsCount = cart?.items.length;
@@ -36,9 +39,13 @@ const Header = async () => {
         </div>
         <div className='flex items-center gap-2'>
           <ModeToggle />
-          <Button variant='outline' size='icon' title='Search for products'>
-            <SearchIcon />
-          </Button>
+          {adminLayout ? (
+            <Search />
+          ) : (
+            <Button variant='outline' size='icon' title='Search for products'>
+              <SearchIcon />
+            </Button>
+          )}
           <Button
             asChild
             variant='outline'

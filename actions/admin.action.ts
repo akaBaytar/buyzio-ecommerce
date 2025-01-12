@@ -18,7 +18,7 @@ import {
 import type { Prisma } from '@prisma/client';
 import type { AddProduct, UpdateProduct } from '@/types';
 
-type ActionTypes = { page: number; limit?: number };
+type ActionTypes = { page: number; limit?: number; query?: string };
 
 type UpdateUser = z.infer<typeof UpdateUserDetailsSchema>;
 
@@ -56,15 +56,20 @@ export const getSummary = async () => {
   };
 };
 
-export const getAllOrders = async ({ page, limit }: ActionTypes) => {
+export const getAllOrders = async ({ page, limit, query }: ActionTypes) => {
   const orders = await prisma.order.findMany({
+    where: {
+      user: {
+        name: { contains: query, mode: 'insensitive' },
+      },
+    },
     orderBy: { updatedAt: 'desc' },
     take: limit,
     skip: (page - 1) * (limit || 10),
     include: { user: { select: { name: true } } },
   });
 
-  const orderCount = await prisma.order.count();
+  const orderCount = orders.length;
 
   const totalPages = Math.ceil(orderCount / (limit || 10));
 
@@ -230,14 +235,15 @@ export const removeProduct = async (id: string) => {
   }
 };
 
-export const getAllUsers = async ({ limit, page }: ActionTypes) => {
+export const getAllUsers = async ({ limit, page, query }: ActionTypes) => {
   const users = await prisma.user.findMany({
+    where: { name: { contains: query, mode: 'insensitive' } },
     orderBy: { createdAt: 'desc' },
     take: limit,
     skip: (page - 1) * (limit || 10),
   });
 
-  const userCount = await prisma.user.count();
+  const userCount = users.length;
 
   const totalPages = Math.ceil(userCount / (limit || 10));
 

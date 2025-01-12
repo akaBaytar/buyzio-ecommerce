@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, FilterXIcon } from 'lucide-react';
 
 import {
   Table,
@@ -30,24 +30,38 @@ export const metadata: Metadata = {
 };
 
 type PageProps = {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query?: string }>;
 };
 
 const AllOrdersPage = async ({ searchParams }: PageProps) => {
-  const { page } = await searchParams;
+  const { page, query } = await searchParams;
 
   const session = await auth();
 
   if ((session?.user as User).role !== 'admin') throw new Error('AUTH');
 
-  const response = await getAllOrders({ page: +page || 1, limit: 10 });
+  const response = await getAllOrders({ page: +page || 1, limit: 10, query });
 
   const { orderCount, orders, totalPages } = response;
 
   return (
     <>
       <div className='flex-between my-5'>
-        <h1 className='h2-bold'>All Orders</h1>
+        <h1 className='h2-bold'>
+          {query ? (
+            <span className='flex items-center gap-2.5'>
+              Filtered Orders
+              <Link
+                href='/admin/orders'
+                title='Reset All Filters'
+                className='border border-input p-1 size-9 rounded-md flex-center bg-primary text-primary-foreground hover:bg-primary/90'>
+                <FilterXIcon className='size-5' />
+              </Link>
+            </span>
+          ) : (
+            'All Orders'
+          )}
+        </h1>
         {totalPages && totalPages > 1 && (
           <Pagination page={+page || 1} totalPages={totalPages} />
         )}
