@@ -29,6 +29,7 @@ import {
 
 import { USER_ROLES } from '@/constants';
 import { useToast } from '@/hooks/use-toast';
+import { updateUser } from '@/actions/admin.action';
 import { UpdateUserDetailsSchema } from '@/schemas';
 
 import type { User } from '@/types';
@@ -45,7 +46,17 @@ const UpdateUserForm = ({ user }: { user: User }) => {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  const onSubmit = () => {};
+  const onSubmit = async (values: z.infer<typeof UpdateUserDetailsSchema>) => {
+    const response = await updateUser(values);
+
+    if (response.success) {
+      toast({ description: response.message });
+
+      router.push('/admin/users');
+    } else {
+      toast({ description: response.message });
+    }
+  };
 
   return (
     <Form {...form}>

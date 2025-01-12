@@ -2,19 +2,25 @@
 
 import { revalidatePath } from 'next/cache';
 
+import z from 'zod';
+
 import prisma from '@/database';
 import { handleError } from '@/lib/utils';
 import { utapi } from '@/server/uploadthing';
 import { updateOrderAsPaid } from '@/actions/order.action';
-import { AddProductSchema, UpdateProductSchema } from '@/schemas';
+
+import {
+  AddProductSchema,
+  UpdateProductSchema,
+  UpdateUserDetailsSchema,
+} from '@/schemas';
 
 import type { Prisma } from '@prisma/client';
 import type { AddProduct, UpdateProduct } from '@/types';
 
-type ActionTypes = {
-  page: number;
-  limit?: number;
-};
+type ActionTypes = { page: number; limit?: number };
+
+type UpdateUser = z.infer<typeof UpdateUserDetailsSchema>;
 
 export const getSummary = async () => {
   const usersCount = await prisma.user.count();
@@ -240,6 +246,27 @@ export const getAllUsers = async ({ limit, page }: ActionTypes) => {
     userCount,
     users: JSON.parse(JSON.stringify(users)),
   };
+};
+
+export const updateUser = async (user: UpdateUser) => {
+  try {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { name: user.name, role: user.role },
+    });
+
+    revalidatePath('/admin/users');
+
+    return {
+      success: true,
+      message: 'User Account updated successfully.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: handleError(error),
+    };
+  }
 };
 
 export const removeUser = async (id: string) => {
