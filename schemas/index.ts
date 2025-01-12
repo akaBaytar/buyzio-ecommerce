@@ -132,3 +132,10 @@ export const UpdateUserSchema = z
       path: ['confirmPassword'],
     }
   );
+
+export const UpdateUserDetailsSchema = z.object({
+  id: z.string().min(1, 'Customer ID is required.'),
+  name: z.string().min(1, 'Name must be at least one character.'),
+  email: z.string().email('Invalid email address.'),
+  role: z.string().min(1, 'Role is required.'),
+});

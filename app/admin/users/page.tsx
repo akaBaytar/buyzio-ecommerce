@@ -79,7 +79,7 @@ const AllUsersPage = async ({ searchParams }: PageProps) => {
                   size='icon'
                   variant='outline'
                   title='Edit Customer Details'>
-                  <Link href={`/admin/user/${user.id}`}>
+                  <Link href={`/admin/users/${user.id}`}>
                     <EditIcon />
                   </Link>
                 </Button>

@@ -1,5 +1,6 @@
-import { getProductBySlug } from '@/actions/product.action';
 import ProductForm from '@/components/admin/product-form';
+
+import { getProductBySlug } from '@/actions/product.action';
 
 import type { Metadata } from 'next';
 
