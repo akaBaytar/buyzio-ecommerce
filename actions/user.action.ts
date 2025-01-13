@@ -78,8 +78,6 @@ export const getUser = async (id: string) => {
     where: { id },
   });
 
-  if (!user) throw new Error('User not found.');
-
   return JSON.parse(JSON.stringify(user));
 };
 

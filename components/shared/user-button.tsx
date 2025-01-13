@@ -40,7 +40,7 @@ const UserButton = async () => {
   const fullName = user?.name;
   const userImg = user?.image;
 
-  if (!session || !userId) {
+  if (!session) {
     return (
       <Button asChild variant='outline' size='icon' title='Sign in'>
         <Link href='/sign-in'>

@@ -72,5 +72,5 @@ export const getFeaturedProducts = async () => {
     take: 4,
   });
 
-  JSON.parse(JSON.stringify(featuredProducts));
+  return JSON.parse(JSON.stringify(featuredProducts));
 };

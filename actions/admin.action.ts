@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import z from 'zod';
 
+import { auth, signOut } from '@/auth';
 import prisma from '@/database';
 import { handleError } from '@/lib/utils';
 import { utapi } from '@/server/uploadthing';
@@ -16,7 +17,7 @@ import {
 } from '@/schemas';
 
 import type { Prisma } from '@prisma/client';
-import type { AddProduct, UpdateProduct } from '@/types';
+import type { AddProduct, UpdateProduct, User } from '@/types';
 
 type ActionTypes = { page: number; limit?: number; query?: string };
 
@@ -222,7 +223,16 @@ export const removeProduct = async (id: string) => {
     if (bannerId) imageIds.push(bannerId);
 
     await utapi.deleteFiles(imageIds as string[]);
-    await prisma.product.delete({ where: { id: product.id } });
+
+    await prisma.$transaction([
+      prisma.orderItem.deleteMany({
+        where: { productId: id },
+      }),
+
+      prisma.product.delete({
+        where: { id },
+      }),
+    ]);
 
     revalidatePath('/admin/products');
 
@@ -284,6 +294,18 @@ export const removeUser = async (id: string) => {
 
     if (!user) throw new Error('User not found.');
 
+    const session = await auth();
+
+    const userId = session?.user?.id;
+    const isAdmin = (session?.user as User)?.role === 'admin';
+
+    if (isAdmin) {
+      return {
+        success: false,
+        message: 'Cannot delete admin account.',
+      };
+    }
+
     await prisma.$transaction([
       prisma.cart.deleteMany({ where: { userId: user.id } }),
       prisma.orderItem.deleteMany({ where: { order: { userId: user.id } } }),
@@ -294,6 +316,8 @@ export const removeUser = async (id: string) => {
     ]);
 
     revalidatePath('/admin/users');
+
+    if (id === userId) signOut({ redirectTo: '/' });
 
     return {
       success: true,

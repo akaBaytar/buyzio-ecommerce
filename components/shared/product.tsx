@@ -23,7 +23,7 @@ export const ProductPrice = ({ value, className }: PriceTypes) => {
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className='w-full max-w-sm mx-auto border-input bg-muted/20'>
+    <Card className='w-full  mx-auto border-input bg-muted/20'>
       <CardHeader className='p-0 items-center'>
         <Link href={`/product/${product.slug}`} className='p-4 mt-4 rounded-xl'>
           <Image
@@ -36,12 +36,12 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
         </Link>
       </CardHeader>
-      <CardContent className='p-4 grid gap-4'>
+      <CardContent className='p-4 grid gap-5'>
         <p className='text-xs line-clamp-1'>{product.brand}</p>
         <Link href={`/product/${product.slug}`}>
           <CardTitle className='line-clamp-1'>{product.name}</CardTitle>
         </Link>
-        <div className='flex-between gap-4'>
+        <div className='flex-between gap-5'>
           <p className=' flex items-center gap-1 text-amber-500 text-sm font-semibold'>
             {product.rating.toString()}
             <StarIcon className='size-4 mb-0.5 fill-amber-500' />
@@ -69,7 +69,7 @@ const ProductList = ({ products, title }: ListTypes) => {
         </div>
       ) : (
         <div className='text-center sm:text-start'>
-          <p>No products found.</p>
+          <p className='text-sm'>No products found.</p>
         </div>
       )}
     </div>
