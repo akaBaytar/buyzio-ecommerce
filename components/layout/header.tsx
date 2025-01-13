@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
+import { ShoppingCartIcon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
 import Search from '../admin/search';
 import ModeToggle from '../shared/mode-toggle';
 import UserButton from '../shared/user-button';
+import ProductSearch from '../shared/product-search';
 
 import { APP_NAME } from '@/constants';
 import { getUserCart } from '@/actions/cart.action';
@@ -39,13 +40,7 @@ const Header = async ({ adminLayout = false }: PropType) => {
         </div>
         <div className='flex items-center gap-2'>
           <ModeToggle />
-          {adminLayout ? (
-            <Search />
-          ) : (
-            <Button variant='outline' size='icon' title='Search for products'>
-              <SearchIcon />
-            </Button>
-          )}
+          {adminLayout ? <Search /> : <ProductSearch />}
           <Button
             asChild
             variant='outline'

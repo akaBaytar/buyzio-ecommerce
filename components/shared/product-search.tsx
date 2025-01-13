@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 import { SearchIcon } from 'lucide-react';
 
 import { Input } from '../ui/input';
@@ -9,34 +5,31 @@ import { Button } from '../ui/button';
 
 import {
   Dialog,
-  DialogTitle,
-  DialogHeader,
   DialogContent,
-  DialogTrigger,
   DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '../ui/dialog';
 
 import {
   Select,
-  SelectItem,
-  SelectValue,
   SelectContent,
+  SelectItem,
   SelectTrigger,
+  SelectValue,
 } from '../ui/select';
 
-import { SEARCH_PATHS } from '@/constants';
+import { getAllCategories } from '@/actions/product.action';
 
-const Search = () => {
-  const [search, setSearch] = useState('');
-  const [query, setQuery] = useState(SEARCH_PATHS[0]);
-
-  const actionURL = `/admin/${query}`;
+const ProductSearch = async () => {
+  const data = await getAllCategories();
 
   return (
     <Dialog>
       <DialogTrigger
         asChild
-        title='Search'
+        title='Search products'
         className='flex items-center text-sm gap-1 p-2.5 rounded-md border border-input'>
         <Button variant='outline' size='icon'>
           <SearchIcon className='size-4' />
@@ -44,25 +37,28 @@ const Search = () => {
       </DialogTrigger>
       <DialogContent className='border-input'>
         <DialogHeader>
-          <DialogTitle className='text-start'>Search</DialogTitle>
+          <DialogTitle className='text-start'>Search Products</DialogTitle>
           <DialogDescription className='text-start text-pretty'>
-            As an administrator, you can search for products, users and orders.
+            Search for products and narrow your search by selecting a category.
           </DialogDescription>
         </DialogHeader>
-        <form action={actionURL}>
+        <form action='/products'>
           <div className='space-y-2.5'>
-            <Select value={query} onValueChange={setQuery}>
+            <Select name='category' defaultValue='all'>
               <SelectTrigger>
-                <SelectValue placeholder='Select search area' />
+                <SelectValue placeholder='All Categories' />
               </SelectTrigger>
               <SelectContent className='border-input'>
-                {SEARCH_PATHS.map((role) => (
+                <SelectItem key='All Categories' value='all'>
+                  All Categories
+                </SelectItem>
+                {data.map((d) => (
                   <SelectItem
-                    key={role}
-                    value={role}
+                    key={d.category}
+                    value={d.category.toLowerCase()}
                     className='cursor-pointer'>
-                    {role.charAt(0).toUpperCase()}
-                    {role.slice(1)}
+                    {d.category.charAt(0).toUpperCase()}
+                    {d.category.slice(1)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -70,9 +66,7 @@ const Search = () => {
             <Input
               name='query'
               type='search'
-              placeholder='Search...'
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              placeholder='Search product'
               className='text-sm'
             />
           </div>
@@ -85,4 +79,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default ProductSearch;

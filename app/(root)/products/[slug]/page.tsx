@@ -52,19 +52,25 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href='/'>{product.category}</Link>
+                <Link
+                  href={`/products?category=${product.category.toLowerCase()}`}>
+                  {product.category}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href='/'>{product.brand}</Link>
+                <Link
+                  href={`/products?category=${product.category.toLowerCase()}&query=${product.brand.toLowerCase()}`}>
+                  {product.brand}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href='/'>{product.name}</Link>
+                <Link href={`/products/${product.slug}`}>{product.name}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
