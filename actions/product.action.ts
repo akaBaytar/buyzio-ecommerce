@@ -18,7 +18,7 @@ export const getLatestProducts = async () => {
     orderBy: { createdAt: 'desc' },
   });
 
-  return latestProducts;
+  return JSON.parse(JSON.stringify(latestProducts));
 };
 
 export const getProductBySlug = async (slug: string) => {
@@ -59,4 +59,8 @@ export const getAllProducts = async ({
     productCount,
     products: JSON.parse(JSON.stringify(products)),
   };
+};
+
+export const getAllCategories = async () => {
+  return await prisma.product.groupBy({ by: ['category'], _count: true });
 };

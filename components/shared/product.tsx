@@ -6,8 +6,7 @@ import { StarIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
 
-import type { Product } from '@prisma/client';
-import type { ListTypes, PriceTypes } from '@/types';
+import type { ListTypes, PriceTypes, Product } from '@/types';
 
 export const ProductPrice = ({ value, className }: PriceTypes) => {
   const string = value.toFixed(2);
@@ -26,9 +25,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className='w-full max-w-sm mx-auto border-input bg-muted/20'>
       <CardHeader className='p-0 items-center'>
-        <Link
-          href={`/product/${product.slug}`}
-          className='p-4 mt-4 rounded-xl'>
+        <Link href={`/product/${product.slug}`} className='p-4 mt-4 rounded-xl'>
           <Image
             src={product.images[0]}
             alt={product.name}
