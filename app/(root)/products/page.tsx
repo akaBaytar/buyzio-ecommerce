@@ -1,6 +1,6 @@
 import { ProductCard } from '@/components/shared/product';
 
-import { getAllProducts } from '@/actions/product.action';
+import { getAllCategories, getAllProducts } from '@/actions/product.action';
 
 import type { Product } from '@/types';
 
@@ -15,6 +15,14 @@ type PageProps = {
   }>;
 };
 
+type ParamTypes = {
+  c?: string;
+  s?: string;
+  p?: string;
+  r?: string;
+  pg?: string;
+};
+
 const ProductsPage = async ({ searchParams }: PageProps) => {
   const {
     page = '1',
@@ -25,7 +33,7 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
     category = 'all',
   } = await searchParams;
 
-  const data = await getAllProducts({
+  const { products } = await getAllProducts({
     sort,
     query,
     price,
@@ -34,7 +42,19 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
     page: +page,
   });
 
-  const { products } = data;
+  const categories = await getAllCategories();
+
+  const filterURL = ({ c, s, p, r, pg }: ParamTypes) => {
+    const params = { sort, query, price, rating, category, page };
+
+    if (c) params.category = c;
+    if (s) params.sort = s;
+    if (p) params.price = p;
+    if (r) params.rating = r;
+    if (pg) params.page = pg;
+
+    return `/products?${new URLSearchParams(params).toString()}`;
+  };
 
   return (
     <>
