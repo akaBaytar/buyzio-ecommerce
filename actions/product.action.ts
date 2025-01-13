@@ -3,12 +3,16 @@
 import { notFound } from 'next/navigation';
 
 import prisma from '@/database';
+import { Prisma } from '@prisma/client';
 import { LATEST_PRODUCTS_LIMIT } from '@/constants';
 
 type GetAllProducts = {
   query: string;
   page: number;
+  sort?: string;
   limit?: number;
+  price?: string;
+  rating?: string;
   category?: string;
 };
 
@@ -32,20 +36,54 @@ export const getProductBySlug = async (slug: string) => {
 };
 
 export const getAllProducts = async ({
+  sort,
   query,
   limit,
-  page,
+  price,
+  rating,
   category,
+  page = 1,
 }: GetAllProducts) => {
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== 'all'
+      ? {
+          OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { brand: { contains: query, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+
+  const categoryFilter = category && category !== 'all' ? { category } : {};
+
+  const priceFilter: Prisma.ProductWhereInput =
+    price && price !== 'all'
+      ? {
+          price: {
+            gte: Number(price.split('-')[0]),
+            lte: Number(price.split('-')[1]) || 9999,
+          },
+        }
+      : {};
+
+  const ratingFilter =
+    rating && rating !== 'all' ? { rating: { gte: +rating } } : {};
+
   const products = await prisma.product.findMany({
     where: {
-      OR: [
-        { name: { contains: query, mode: 'insensitive' } },
-        { brand: { contains: query, mode: 'insensitive' } },
-      ],
-      ...(category && { category: { equals: category } }),
+      ...queryFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
     },
-    orderBy: { createdAt: 'desc' },
+    orderBy:
+      sort === 'lowest'
+        ? { price: 'asc' }
+        : sort === 'highest'
+        ? { price: 'desc' }
+        : sort === 'rating'
+        ? { rating: 'desc' }
+        : { createdAt: 'desc' },
     take: limit,
     skip: (page - 1) * (limit || 10),
   });

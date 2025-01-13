@@ -46,14 +46,13 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
           <BreadcrumbList className='text-xs'>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href='/'>Home</Link>
+                <Link href='/products'>Products</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link
-                  href={`/products?category=${product.category.toLowerCase()}`}>
+                <Link href={`/products?category=${product.category}`}>
                   {product.category}
                 </Link>
               </BreadcrumbLink>
@@ -61,8 +60,7 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link
-                  href={`/products?category=${product.category.toLowerCase()}&query=${product.brand.toLowerCase()}`}>
+                <Link href={`/products?query=${product.brand}`}>
                   {product.brand}
                 </Link>
               </BreadcrumbLink>

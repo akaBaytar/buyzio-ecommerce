@@ -21,7 +21,7 @@ export const ProductPrice = ({ value, className }: PriceTypes) => {
   );
 };
 
-const ProductCard = ({ product }: { product: Product }) => {
+export const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className='w-full  mx-auto border-input bg-muted/20'>
       <CardHeader className='p-0 items-center'>
