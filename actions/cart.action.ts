@@ -68,7 +68,7 @@ export const addToCart = async (data: CartItem) => {
         data: newCart,
       });
 
-      revalidatePath(`/product/${product.slug}`);
+      revalidatePath(`/products/${product.slug}`);
 
       return {
         success: true,
@@ -103,7 +103,7 @@ export const addToCart = async (data: CartItem) => {
         },
       });
 
-      revalidatePath(`/product/${product.slug}`);
+      revalidatePath(`/products/${product.slug}`);
 
       return {
         success: true,
@@ -157,7 +157,7 @@ export const removeFromCart = async (id: string) => {
       },
     });
 
-    revalidatePath(`/product/${product.slug}`);
+    revalidatePath(`/products/${product.slug}`);
 
     const isLastItem = cart.items.find((i) => i.productId === id);
 

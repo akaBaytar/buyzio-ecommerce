@@ -24,7 +24,7 @@ const ProductCarousel = ({ products }: { products: Product[] }) => {
       <CarouselContent>
         {products.map((product: Product) => (
           <CarouselItem key={product.id}>
-            <Link href={`/product/${product.slug}`}>
+            <Link href={`/products/${product.slug}`}>
               <div className='relative mx-auto'>
                 <Image
                   priority

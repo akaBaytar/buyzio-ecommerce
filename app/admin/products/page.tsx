@@ -114,7 +114,7 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
                   size='icon'
                   variant='outline'
                   title='Show Details'>
-                  <Link href={`/product/${product.slug}`}>
+                  <Link href={`/products/${product.slug}`}>
                     <EyeIcon />
                   </Link>
                 </Button>

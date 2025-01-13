@@ -96,7 +96,7 @@ const ProductForm = ({
       if (response.success) {
         toast({ description: response.message });
 
-        router.push(`/product/${values.slug}`);
+        router.push(`/products/${values.slug}`);
       } else {
         toast({ description: response.message });
       }

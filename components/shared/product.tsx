@@ -25,7 +25,9 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className='w-full  mx-auto border-input bg-muted/20'>
       <CardHeader className='p-0 items-center'>
-        <Link href={`/product/${product.slug}`} className='p-4 mt-4 rounded-xl'>
+        <Link
+          href={`/products/${product.slug}`}
+          className='p-4 mt-4 rounded-xl'>
           <Image
             src={product.images[0]}
             alt={product.name}
@@ -38,7 +40,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </CardHeader>
       <CardContent className='p-4 grid gap-5'>
         <p className='text-xs line-clamp-1'>{product.brand}</p>
-        <Link href={`/product/${product.slug}`}>
+        <Link href={`/products/${product.slug}`}>
           <CardTitle className='line-clamp-1'>{product.name}</CardTitle>
         </Link>
         <div className='flex-between gap-5'>

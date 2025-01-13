@@ -1,5 +1,15 @@
+import Link from 'next/link';
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 import AddToCart from '@/components/shared/add-to-cart';
 import { ProductPrice } from '@/components/shared/product';
@@ -7,6 +17,8 @@ import ProductImages from '@/components/shared/product-images';
 
 import { getUserCart } from '@/actions/cart.action';
 import { getProductBySlug } from '@/actions/product.action';
+
+import type { Product } from '@/types';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -16,7 +28,7 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
   const { slug } = await params;
 
   const cart = await getUserCart();
-  const product = await getProductBySlug(slug);
+  const product: Product = await getProductBySlug(slug);
 
   const cartItem = {
     slug: product.slug,
@@ -29,7 +41,34 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
 
   return (
     <>
-      <section>
+      <section className='space-y-5'>
+        <Breadcrumb>
+          <BreadcrumbList className='text-xs'>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href='/'>Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href='/'>{product.category}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href='/'>{product.brand}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href='/'>{product.name}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className='grid grid-cols-1 lg:grid-cols-5'>
           <div className='col-span-2'>
             <ProductImages images={product.images} />

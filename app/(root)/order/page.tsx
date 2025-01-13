@@ -105,7 +105,7 @@ const PlaceOrderPage = async () => {
                     <TableRow key={slug} className='border-input'>
                       <TableCell>
                         <Link
-                          href={`/product/${slug}`}
+                          href={`/products/${slug}`}
                           className='flex items-center gap-1.5'>
                           <Image
                             src={image}
