@@ -67,7 +67,7 @@ const UserButton = async () => {
           <DropdownMenuLabel className='font-normal'>
             <div className='flex items-center gap-2.5'>
               <Image
-                src={userImg || '/user.png'}
+                src={userImg || '/assets/user.png'}
                 alt='User Avatar'
                 width={26}
                 height={26}

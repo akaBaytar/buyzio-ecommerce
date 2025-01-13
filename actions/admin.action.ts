@@ -215,10 +215,13 @@ export const removeProduct = async (id: string) => {
 
     const images = product.images;
 
+    const bannerId = product.banner?.split('/').pop();
+
     const imageIds = images.map((url: string) => url.split('/').pop());
 
-    await utapi.deleteFiles(imageIds as string[]);
+    if (bannerId) imageIds.push(bannerId);
 
+    await utapi.deleteFiles(imageIds as string[]);
     await prisma.product.delete({ where: { id: product.id } });
 
     revalidatePath('/admin/products');

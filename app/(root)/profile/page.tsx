@@ -85,7 +85,7 @@ const ProfilePage = async () => {
           </CardHeader>
           <CardContent className='flex items-center gap-5'>
             <Image
-              src={user.image || '/user.png'}
+              src={user.image || '/assets/user.png'}
               width={64}
               height={64}
               alt={user.name}

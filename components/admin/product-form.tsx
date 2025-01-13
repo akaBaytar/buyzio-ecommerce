@@ -13,15 +13,17 @@ import { ImagePlusIcon, Loader2Icon } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { Checkbox } from '../ui/checkbox';
 import { Textarea } from '../ui/textarea';
 
 import {
   Form,
-  FormControl,
-  FormField,
   FormItem,
   FormLabel,
+  FormField,
+  FormControl,
   FormMessage,
+  FormDescription,
 } from '../ui/form';
 
 import { cn } from '@/lib/utils';
@@ -74,6 +76,8 @@ const ProductForm = ({
   });
 
   const name = form.watch('name');
+  const banner = form.watch('banner');
+  const isFeatured = form.watch('isFeatured');
 
   const isSubmitting = form.formState.isSubmitting;
 
@@ -176,6 +180,100 @@ const ProductForm = ({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name='isFeatured'
+          render={({ field }) => (
+            <div className='w-full'>
+              <FormLabel>Featuring:</FormLabel>
+              <FormItem className='flex items-start space-x-1.5 space-y-0 rounded-md border border-input p-3'>
+                <FormControl>
+                  <Checkbox
+                    id='isFeaturedCheckbox'
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className='space-y-1.5'>
+                  <label
+                    htmlFor='isFeaturedCheckbox'
+                    className='block text-sm leading-none mt-[1px] cursor-pointer select-none'>
+                    Check if you want product to be featured.
+                  </label>
+                  <FormDescription className='leading-snug text-xs'>
+                    You can add extra image to featured products as a slide on
+                    the homepage.
+                  </FormDescription>
+                </div>
+                <FormMessage />
+              </FormItem>
+            </div>
+          )}
+        />
+        {isFeatured && (
+          <FormField
+            control={form.control}
+            name='banner'
+            render={() => (
+              <FormItem className='w-full'>
+                <FormLabel>Slide Image:</FormLabel>
+                {banner && (
+                  <Image
+                    priority
+                    src={banner}
+                    width={1332}
+                    height={750}
+                    alt='Featured Product Banner'
+                    className='w-full max-h-56 object-contain rounded-md border border-input'
+                  />
+                )}
+                {!banner && (
+                  <UploadDropzone
+                    endpoint='imageUploader'
+                    content={{
+                      button({ ready }) {
+                        if (ready)
+                          return (
+                            <p className='flex items-center gap-2'>
+                              <ImagePlusIcon className='size-4' />
+                              Upload
+                            </p>
+                          );
+
+                        return <Loader2Icon className='size-4 animate-spin' />;
+                      },
+                      label({ ready }) {
+                        if (ready)
+                          return (
+                            <p className='text-xs'>
+                              Choose one file or drag and drop
+                            </p>
+                          );
+
+                        return <Loader2Icon className='size-4 animate-spin' />;
+                      },
+                      allowedContent() {
+                        return (
+                          <p className='text-muted-foreground'>
+                            Images up to 4MB, max 1.
+                          </p>
+                        );
+                      },
+                    }}
+                    onClientUploadComplete={(res: { url: string }[]) => {
+                      form.setValue('banner', res[0].url);
+                    }}
+                    onUploadError={(err: Error) => {
+                      toast({ description: err.message });
+                    }}
+                    className='border-double border-input ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
+                  />
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <div className='flex flex-col gap-5 md:flex-row'>
           <FormField
             control={form.control}
@@ -267,7 +365,7 @@ const ProductForm = ({
                         width={500}
                         height={500}
                         alt={`Product image (${idx})`}
-                        className='w-[calc(33%-10px)] max-h-56 object-contain rounded-md'
+                        className='w-[calc(33%-10px)] max-h-56 object-contain rounded-md border border-input'
                       />
                     ))}
                   </div>
@@ -328,7 +426,7 @@ const ProductForm = ({
                       onUploadError={(err: Error) => {
                         toast({ description: err.message });
                       }}
-                      className='border-double border-input cursor-pointer ut-button:bg-secondary ut-button:hover:bg-primary ut-button:ut-uploading:bg-secondary ut-button:text-primary ut-button:hover:text-primary-foreground ut-button:text-sm ut-label:text-muted-foreground'
+                      className='border-double border-input ut-button:bg-secondary ut-button:text-primary ut-button:text-sm ut-label:text-muted-foreground'
                     />
                   )}
                 </div>

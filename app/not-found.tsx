@@ -11,7 +11,7 @@ const NotFoundPage = () => {
     <div className='flex-center flex-col min-h-screen'>
       <div className='flex-center flex-col gap-5 text-center rounded-md'>
         <Image
-          src='/logo.svg'
+          src='/assets/logo.svg'
           width={100}
           height={100}
           priority={true}

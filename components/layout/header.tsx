@@ -25,7 +25,7 @@ const Header = async ({ adminLayout = false }: PropType) => {
         <div className='flex-start'>
           <Link href='/' title='Buyzio - Homepage' className='flex-start'>
             <Image
-              src='/logo.svg'
+              src='/assets/logo.svg'
               width={48}
               height={48}
               priority={true}

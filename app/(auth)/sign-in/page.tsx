@@ -39,7 +39,7 @@ const SignInPage = async ({ searchParams }: PageProps) => {
         <CardHeader className='space-y-5'>
           <Link href='/' className='flex-center'>
             <Image
-              src='/logo.svg'
+              src='/assets/logo.svg'
               width={100}
               height={100}
               priority={true}

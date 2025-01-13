@@ -64,3 +64,13 @@ export const getAllProducts = async ({
 export const getAllCategories = async () => {
   return await prisma.product.groupBy({ by: ['category'], _count: true });
 };
+
+export const getFeaturedProducts = async () => {
+  const featuredProducts = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: 'desc' },
+    take: 4,
+  });
+
+  JSON.parse(JSON.stringify(featuredProducts));
+};
