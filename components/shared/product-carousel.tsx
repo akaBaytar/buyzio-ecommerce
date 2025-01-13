@@ -33,7 +33,7 @@ const ProductCarousel = ({ products }: { products: Product[] }) => {
                   width={0}
                   height={0}
                   sizes='100vw'
-                  className='h-auto max-h-[30rem] w-full object-cover border border-input rounded-md bg-muted/20'
+                  className='h-auto max-h-[35rem] w-full object-cover border border-input rounded-md bg-muted/20'
                 />
               </div>
             </Link>
