@@ -70,7 +70,13 @@ export const getAllOrders = async ({ page, limit, query }: ActionTypes) => {
     include: { user: { select: { name: true } } },
   });
 
-  const orderCount = orders.length;
+  const orderCount = await prisma.order.count({
+    where: {
+      user: {
+        name: { contains: query, mode: 'insensitive' },
+      },
+    },
+  });
 
   const totalPages = Math.ceil(orderCount / (limit || 10));
 
@@ -256,7 +262,9 @@ export const getAllUsers = async ({ limit, page, query }: ActionTypes) => {
     skip: (page - 1) * (limit || 10),
   });
 
-  const userCount = users.length;
+  const userCount = await prisma.user.count({
+    where: { name: { contains: query, mode: 'insensitive' } },
+  });
 
   const totalPages = Math.ceil(userCount / (limit || 10));
 

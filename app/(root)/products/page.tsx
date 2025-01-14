@@ -19,6 +19,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 
+import Pagination from '@/components/shared/pagination';
 import { ProductCard } from '@/components/shared/product';
 
 import { cn } from '@/lib/utils';
@@ -72,13 +73,14 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
     category = 'all',
   } = await searchParams;
 
-  const { products } = await getAllProducts({
+  const { products, totalPages, productCount } = await getAllProducts({
     sort,
     query,
     price,
     rating,
     category,
     page: +page,
+    limit: 6,
   });
 
   const categories = await getAllCategories();
@@ -139,10 +141,23 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
 
   return (
     <>
-      <h1 className='h2-bold py-5'>Products</h1>
+      <div className='flex-between'>
+        <h1 className='h2-bold py-5'>Products</h1>
+        <Pagination page={+page} totalPages={totalPages} />
+      </div>
       <div className='grid grid-cols-1 gap-5 lg:grid-cols-8'>
         <div className='lg:col-span-2'>
           <div className='space-y-5 bg-muted/20 p-5 rounded-xl border border-input shadow-lg'>
+            {productCount === 0 ? (
+              <p className='text-sm border border-input p-2.5 rounded-xl shadow-md'>
+                No product found
+              </p>
+            ) : (
+              <p className='text-sm border border-input p-2.5 rounded-xl shadow-md'>
+                {productCount} {productCount <= 1 ? 'product' : 'products'}{' '}
+                found
+              </p>
+            )}
             <Accordion type='single' collapsible>
               <AccordionItem
                 value='categories'
@@ -274,9 +289,6 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
             </div>
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-            {products.length === 0 && (
-              <p className='text-sm'>No products found.</p>
-            )}
             {products.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}

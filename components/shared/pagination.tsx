@@ -38,7 +38,7 @@ const Pagination = ({
   return (
     <div className='flex items-center gap-2'>
       <Button
-        size={text ? 'sm' : 'icon'}
+        size={text ? 'default' : 'icon'}
         variant='outline'
         disabled={page <= 1}
         title='Show Previous Page'
@@ -47,7 +47,7 @@ const Pagination = ({
         {text && 'Previous'}
       </Button>
       <Button
-        size={text ? 'sm' : 'icon'}
+        size={text ? 'default' : 'icon'}
         variant='outline'
         disabled={page >= totalPages}
         title='Show Next Page'

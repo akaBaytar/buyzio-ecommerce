@@ -92,7 +92,14 @@ export const getAllProducts = async ({
     skip: (page - 1) * (limit || 10),
   });
 
-  const productCount = products.length;
+  const productCount = await prisma.product.count({
+    where: {
+      ...queryFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    },
+  });
 
   const totalPages = Math.ceil(productCount / (limit || 10));
 
