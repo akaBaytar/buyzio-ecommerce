@@ -140,8 +140,8 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
   return (
     <>
       <h1 className='h2-bold py-5'>Products</h1>
-      <div className='grid grid-cols-1 gap-5 lg:grid-cols-5'>
-        <div className='lg:col-span-1'>
+      <div className='grid grid-cols-1 gap-5 lg:grid-cols-8'>
+        <div className='lg:col-span-2'>
           <div className='space-y-5 bg-muted/20 p-5 rounded-xl border border-input shadow-lg'>
             <Accordion type='single' collapsible>
               <AccordionItem
@@ -232,7 +232,7 @@ const ProductsPage = async ({ searchParams }: PageProps) => {
             </Accordion>
           </div>
         </div>
-        <div className='space-y-5 lg:col-span-4'>
+        <div className='space-y-5 lg:col-span-6'>
           <div className='flex-between flex-col sm:flex-row mb-5 gap-5 border border-input bg-muted/20 shadow-md rounded-xl text-sm p-5'>
             <div className='flex-center sm:justify-start w-full'>
               {(query !== 'all' && query !== '') ||

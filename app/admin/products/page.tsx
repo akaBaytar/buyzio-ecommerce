@@ -133,7 +133,8 @@ const AllProductsPage = async ({ searchParams }: PageProps) => {
           ))}
         </TableBody>
         <TableCaption className='text-xs'>
-          Page: {page || '1'} of {totalPages} - Total Order: {productCount}
+          Page: {page || '1'} of {totalPages || '1'} - Total Order:{' '}
+          {productCount}
         </TableCaption>
       </Table>
     </div>

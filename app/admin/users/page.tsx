@@ -107,7 +107,8 @@ const AllUsersPage = async ({ searchParams }: PageProps) => {
           ))}
         </TableBody>
         <TableCaption className='text-xs'>
-          Page: {page || '1'} of {totalPages} - Total Customer: {userCount}
+          Page: {page || '1'} of {totalPages || '1'} - Total Customer:{' '}
+          {userCount}
         </TableCaption>
       </Table>
     </>

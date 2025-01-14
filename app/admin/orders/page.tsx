@@ -113,7 +113,7 @@ const AllOrdersPage = async ({ searchParams }: PageProps) => {
           ))}
         </TableBody>
         <TableCaption className='text-xs'>
-          Page: {page || '1'} of {totalPages} - Total Order: {orderCount}
+          Page: {page || '1'} of {totalPages || '1'} - Total Order: {orderCount}
         </TableCaption>
       </Table>
     </>
