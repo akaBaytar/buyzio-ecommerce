@@ -83,6 +83,10 @@ export const getAllProducts = async ({
         ? { price: 'desc' }
         : sort === 'rating'
         ? { rating: 'desc' }
+        : sort === 'first'
+        ? { name: 'desc' }
+        : sort === 'last'
+        ? { name: 'asc' }
         : { createdAt: 'desc' },
     take: limit,
     skip: (page - 1) * (limit || 10),

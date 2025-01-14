@@ -24,6 +24,14 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const generateMetadata = async ({ params }: PageProps) => {
+  const { slug } = await params;
+
+  const product = await getProductBySlug(slug);
+
+  return { title: product.name };
+};
+
 const ProductDetailsPage = async ({ params }: PageProps) => {
   const { slug } = await params;
 
