@@ -3,6 +3,7 @@ import z from 'zod';
 import {
   AddOrderSchema,
   CartItemSchema,
+  AddReviewSchema,
   UpdateUserSchema,
   AddProductSchema,
   AddOrderItemSchema,
@@ -83,3 +84,10 @@ export type UpdateUser = z.infer<typeof UpdateUserSchema>;
 export type AddProduct = z.infer<typeof AddProductSchema>;
 
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
+
+export type AddReview = z.infer<typeof AddReviewSchema> & {
+  id: string;
+  user?: { name: string; image?: string };
+  createdAt: Date;
+  updatedAt: Date;
+};

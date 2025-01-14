@@ -231,13 +231,9 @@ export const removeProduct = async (id: string) => {
     await utapi.deleteFiles(imageIds as string[]);
 
     await prisma.$transaction([
-      prisma.orderItem.deleteMany({
-        where: { productId: id },
-      }),
-
-      prisma.product.delete({
-        where: { id },
-      }),
+      prisma.orderItem.deleteMany({ where: { productId: id } }),
+      prisma.review.deleteMany({ where: { productId: id } }),
+      prisma.product.delete({ where: { id } }),
     ]);
 
     revalidatePath('/admin/products');
