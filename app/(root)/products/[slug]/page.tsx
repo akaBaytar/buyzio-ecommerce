@@ -12,8 +12,11 @@ import {
 } from '@/components/ui/breadcrumb';
 
 import AddToCart from '@/components/shared/add-to-cart';
+import ReviewList from '@/components/shared/review-list';
 import { ProductPrice } from '@/components/shared/product';
 import ProductImages from '@/components/shared/product-images';
+
+import { auth } from '@/auth';
 
 import { getUserCart } from '@/actions/cart.action';
 import { getProductBySlug } from '@/actions/product.action';
@@ -46,6 +49,9 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
     productId: product.id,
     qty: 1,
   };
+
+  const session = await auth();
+  const userId = session?.user?.id;
 
   return (
     <>
@@ -82,33 +88,33 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
           </BreadcrumbList>
         </Breadcrumb>
         <div className='grid grid-cols-1 lg:grid-cols-5'>
-          <div className='col-span-2'>
+          <div className='lg:col-span-2'>
             <ProductImages images={product.images} />
           </div>
-          <div className='col-span-2 p-5'>
-            <div className='flex flex-col gap-5'>
-              <p>
+          <div className='lg:col-span-2 p-5'>
+            <div className='flex flex-col gap-2.5'>
+              <p className='text-sm font-medium'>
                 {product.brand} - {product.category}
               </p>
               <h1 className='h3-bold'>{product.name}</h1>
               <p className='text-sm'>
                 {product.rating.toString()} of {product.numReviews} reviews
               </p>
-              <div className='flex flex-col gap-2 sm:flex-row sm:items-center'>
+              <div className='flex flex-col gap-2.5 sm:flex-row sm:items-center'>
                 <ProductPrice
                   value={Number(product.price)}
-                  className='mt-5 rounded-xl bg-muted text-foreground px-5 pt-2.5 pb-1.5 max-w-fit shadow'
+                  className='mt-2.5 rounded-xl bg-muted text-foreground px-5 pt-2.5 pb-1.5 max-w-fit shadow'
                 />
               </div>
             </div>
-            <div className='mt-10'>
+            <div className='mt-5'>
               <p className='font-semibold'>Description</p>
               <p className='leading-loose font-light text-pretty'>
                 {product.description}
               </p>
             </div>
           </div>
-          <div>
+          <div className='lg:col-span-1'>
             <Card className='border-input'>
               <CardContent className='p-5'>
                 <div className='mb-2.5 flex justify-between'>
@@ -138,6 +144,14 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
             </Card>
           </div>
         </div>
+      </section>
+      <section className='my-5 p-5 border border-input rounded-md bg-muted/20'>
+        <h2 className='h3-bold'>Customer Reviews</h2>
+        <ReviewList
+          productId={product.id}
+          userId={userId as string}
+          productSlug={product.slug}
+        />
       </section>
     </>
   );

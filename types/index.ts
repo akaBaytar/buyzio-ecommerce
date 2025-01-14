@@ -85,7 +85,7 @@ export type AddProduct = z.infer<typeof AddProductSchema>;
 
 export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
 
-export type AddReview = z.infer<typeof AddReviewSchema> & {
+export type Review = z.infer<typeof AddReviewSchema> & {
   id: string;
   user?: { name: string; image?: string };
   createdAt: Date;
