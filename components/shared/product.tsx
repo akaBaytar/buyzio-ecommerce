@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { StarIcon } from 'lucide-react';
-
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+
+import Rating from './rating';
+
 import { cn } from '@/lib/utils';
 
 import type { ListTypes, PriceTypes, Product } from '@/types';
@@ -38,16 +39,13 @@ export const ProductCard = ({ product }: { product: Product }) => {
           />
         </Link>
       </CardHeader>
-      <CardContent className='p-4 grid gap-5'>
+      <CardContent className='p-5 grid gap-2.5'>
         <p className='text-xs line-clamp-1'>{product.brand}</p>
         <Link href={`/products/${product.slug}`}>
           <CardTitle className='line-clamp-1'>{product.name}</CardTitle>
         </Link>
         <div className='flex-between gap-5'>
-          <p className=' flex items-center gap-1 text-amber-500 text-sm font-semibold'>
-            {product.rating.toString()}
-            <StarIcon className='size-4 mb-0.5 fill-amber-500' />
-          </p>
+          <Rating value={+product.rating} />
           {product.stock > 0 ? (
             <ProductPrice value={+product.price} />
           ) : (

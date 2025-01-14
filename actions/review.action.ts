@@ -60,7 +60,7 @@ export const submitReview = async (data: z.infer<typeof AddReviewSchema>) => {
 
     revalidatePath(`/products/${product.slug}`);
 
-    return { success: true, message: 'Leave a review successfully.' };
+    return { success: true, message: 'Leaved a review successfully.' };
   } catch (error) {
     return { success: false, message: handleError(error) };
   }

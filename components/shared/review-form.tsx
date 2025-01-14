@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 import { z } from 'zod';
-import { Loader2Icon, StarIcon } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
+import { Loader2Icon, StarIcon } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   Dialog,
@@ -38,12 +38,14 @@ import {
   FormMessage,
 } from '../ui/form';
 
+import { RATINGS } from '@/constants';
 import { AddReviewSchema } from '@/schemas';
+import { submitReview, getUserReview } from '@/actions/review.action';
 
 type PropTypes = {
   userId: string;
   productId: string;
-  onSubmitted?: () => void;
+  onSubmitted: () => void;
 };
 
 const ReviewForm = ({ userId, productId, onSubmitted }: PropTypes) => {
@@ -60,33 +62,55 @@ const ReviewForm = ({ userId, productId, onSubmitted }: PropTypes) => {
     },
   });
 
-  const onClick = () => {
+  const onClick = async () => {
+    form.setValue('userId', userId);
+    form.setValue('productId', productId);
+
+    const review = await getUserReview({ productId });
+
+    if (review) {
+      form.setValue('title', review.title);
+      form.setValue('description', review.description);
+      form.setValue('rating', review.rating);
+    }
+
     setOpen(true);
   };
 
-  const ratings = [
-    { value: 5 },
-    { value: 4 },
-    { value: 3 },
-    { value: 2 },
-    { value: 1 },
-  ];
+  const onSubmit: SubmitHandler<z.infer<typeof AddReviewSchema>> = async (
+    values
+  ) => {
+    const response = await submitReview({ ...values, productId });
+
+    if (response.success) {
+      toast({ description: response.message });
+
+      setOpen(false);
+
+      onSubmitted();
+    } else {
+      toast({ description: response.message });
+    }
+  };
 
   const isSubmitting = form.formState.isSubmitting;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button onClick={onClick} variant='outline'>
+      <Button
+        onClick={onClick}
+        variant='outline'
+        className='w-[192px] lg:w-[231px]'>
         Leave a Review
       </Button>
       <DialogContent className='border-input'>
         <Form {...form}>
-          <form method='POST'>
+          <form method='POST' onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle>Leave a Review</DialogTitle>
               <DialogDescription className='text-pretty'>
-                You can leave a review, rate the product, or update your
-                existing review.
+                You can leave a review, rate the product or update your existing
+                review.
               </DialogDescription>
             </DialogHeader>
             <div className='grid gap-5 py-5'>
@@ -142,7 +166,7 @@ const ReviewForm = ({ userId, productId, onSubmitted }: PropTypes) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className='border-input'>
-                        {ratings.map(({ value }) => (
+                        {RATINGS.map(({ value }) => (
                           <SelectItem
                             key={value}
                             value={value.toString()}

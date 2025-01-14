@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
+import Rating from '@/components/shared/rating';
 import AddToCart from '@/components/shared/add-to-cart';
 import ReviewList from '@/components/shared/review-list';
 import { ProductPrice } from '@/components/shared/product';
@@ -97,9 +98,14 @@ const ProductDetailsPage = async ({ params }: PageProps) => {
                 {product.brand} - {product.category}
               </p>
               <h1 className='h3-bold'>{product.name}</h1>
-              <p className='text-sm'>
-                {product.rating.toString()} of {product.numReviews} reviews
-              </p>
+              <div className='flex gap-2.5 items-center'>
+                <Rating value={+product.rating} />
+                <p className='text-xs'>
+                  {product.numReviews <= 1
+                    ? `(${product.numReviews} review)`
+                    : `(${product.numReviews} reviews)`}
+                </p>
+              </div>
               <div className='flex flex-col gap-2.5 sm:flex-row sm:items-center'>
                 <ProductPrice
                   value={Number(product.price)}

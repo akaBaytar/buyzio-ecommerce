@@ -30,3 +30,11 @@ export const USER_ROLES = process.env.USER_ROLES
 export const SEARCH_PATHS = process.env.SEARCH_PATHS
   ? process.env.SEARCH_PATHS.split(', ')
   : ['products', 'users', 'orders'];
+
+export const RATINGS = [
+  { value: 5 },
+  { value: 4 },
+  { value: 3 },
+  { value: 2 },
+  { value: 1 },
+];
