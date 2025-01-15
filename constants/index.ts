@@ -38,3 +38,5 @@ export const RATINGS = [
   { value: 2 },
   { value: 1 },
 ];
+
+export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'onboarding@resend.dev';

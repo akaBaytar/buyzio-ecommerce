@@ -10,11 +10,12 @@ import { auth } from '@/auth';
 import { paypal } from '@/lib/paypal';
 import { handleError } from '@/lib/utils';
 import { AddOrderSchema } from '@/schemas';
+import { sendPurchaseReceipt } from '@/email';
 
 import { getUser } from './user.action';
 import { getUserCart } from './cart.action';
 
-import type { CartItem, PaymentResult } from '@/types';
+import type { CartItem, PaymentResult, ShippingAddress } from '@/types';
 
 type UpdateAsPaid = {
   id: string;
@@ -250,7 +251,10 @@ export const approvePayPalOrder = async (
   }
 };
 
-export const updateOrderAsPaid = async ({ id, paymentResult }: UpdateAsPaid) => {
+export const updateOrderAsPaid = async ({
+  id,
+  paymentResult,
+}: UpdateAsPaid) => {
   const order = await prisma.order.findFirst({
     where: { id },
     include: { orderItems: true },
@@ -277,4 +281,22 @@ export const updateOrderAsPaid = async ({ id, paymentResult }: UpdateAsPaid) => 
       },
     });
   });
+
+  const updatedOrder = await prisma.order.findFirst({
+    where: { id },
+    include: {
+      orderItems: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+
+  if (!updatedOrder) throw new Error('Order not found.');
+
+  const orderForEmail = {
+    ...updatedOrder,
+    shippingAddress: order.shippingAddress as ShippingAddress,
+    paymentResult: order.paymentResult as PaymentResult,
+  };
+
+  sendPurchaseReceipt({ order: JSON.parse(JSON.stringify(orderForEmail)) });
 };
