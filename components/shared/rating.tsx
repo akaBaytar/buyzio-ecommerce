@@ -1,9 +1,9 @@
-import { StarIcon, StarHalfIcon } from 'lucide-react';
+import { FaStarHalfAlt, FaStar, FaRegStar } from 'react-icons/fa';
 
 const Rating = ({ value, caption }: { value: number; caption?: string }) => {
-  const Empty = () => <StarIcon className='size-4' />;
-  const Full = () => <StarIcon className='fill-primary size-4' />;
-  const Half = () => <StarHalfIcon className='fill-primary size-4' />;
+  const Empty = () => <FaRegStar className='size-4' />;
+  const Full = () => <FaStar className='size-4' />;
+  const Half = () => <FaStarHalfAlt className='size-4' />;
 
   return (
     <div title={`${value.toString()}/5 rating`} className='flex gap-2.5'>
