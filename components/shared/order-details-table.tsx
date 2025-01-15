@@ -21,6 +21,8 @@ import {
   TableRow,
 } from '../ui/table';
 
+import PaymentWithStripe from './payment-stripe';
+
 import { useToast } from '@/hooks/use-toast';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { createPayPalOrder, approvePayPalOrder } from '@/actions/order.action';
@@ -30,28 +32,34 @@ import type { Order } from '@/types';
 
 type PropTypes = {
   order: Order;
-  paypalClientId: string;
   isAdmin: boolean;
+  paypalClientId: string;
+  stripeClientSecret: string | null;
 };
 
-const OrderDetailsTable = ({ order, isAdmin, paypalClientId }: PropTypes) => {
+const OrderDetailsTable = ({
+  order,
+  isAdmin,
+  paypalClientId,
+  stripeClientSecret,
+}: PropTypes) => {
   const [isPending, startTransition] = useTransition();
 
   const { toast } = useToast();
 
   const {
     id,
-    itemsPrice,
-    shippingPrice,
+    paidAt,
+    isPaid,
     taxPrice,
     totalPrice,
-    isDelivered,
-    isPaid,
+    orderItems,
+    itemsPrice,
     deliveredAt,
-    paidAt,
+    isDelivered,
+    shippingPrice,
     paymentMethod,
     shippingAddress,
-    orderItems,
   } = order;
 
   const createPaypalOrder = async () => {
@@ -211,7 +219,9 @@ const OrderDetailsTable = ({ order, isAdmin, paypalClientId }: PropTypes) => {
                 <p className='text-xs text-center bg-input p-2.5 rounded-md'>
                   Paid at {formatDate(paidAt as Date).date} via {paymentMethod}
                 </p>
-              ) : !isPaid && paymentMethod !== 'Paypal' ? (
+              ) : !isPaid &&
+                (paymentMethod === 'Cash on Delivery' ||
+                  paymentMethod === 'Bank Transfer') ? (
                 <p className='text-xs text-center bg-input p-2.5 rounded-md'>
                   Not paid yet
                 </p>
@@ -232,6 +242,15 @@ const OrderDetailsTable = ({ order, isAdmin, paypalClientId }: PropTypes) => {
                   </PayPalScriptProvider>
                 </div>
               )}
+              {!isPaid &&
+                paymentMethod === 'Credit Card' &&
+                stripeClientSecret && (
+                  <PaymentWithStripe
+                    orderId={order.id}
+                    clientSecret={stripeClientSecret}
+                    price={Number(order.totalPrice) * 100}
+                  />
+                )}
             </CardContent>
           </Card>
           {!isPaid &&
