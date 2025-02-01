@@ -1,6 +1,8 @@
 import ProductList from '@/components/shared/product';
 import ProductCarousel from '@/components/shared/product-carousel';
 
+import DealCountdown from '@/components/home/deal-countdown';
+
 import {
   getLatestProducts,
   getFeaturedProducts,
@@ -16,6 +18,7 @@ const HomePage = async () => {
         <ProductCarousel products={featuredProducts} />
       )}
       <ProductList products={latestProducts} title='Newest Arrivals' />
+      <DealCountdown />
     </>
   );
 };

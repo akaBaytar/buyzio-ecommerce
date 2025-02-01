@@ -59,8 +59,11 @@ export const ProductCard = ({ product }: { product: Product }) => {
 
 const ProductList = ({ products, title }: ListTypes) => {
   return (
-    <div className='my-10'>
-      <h2 className='h2-bold mb-4 text-center sm:text-start'>{title}</h2>
+    <section>
+      <h2 className='h2-bold mb-1 text-center sm:text-start'>{title}</h2>
+      <p className='mb-4 text-sm font-light text-center sm:text-start'>
+        Shop the latest additions fresh in stock
+      </p>
       {products.length > 0 ? (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
           {products.map((product: Product) => (
@@ -72,7 +75,7 @@ const ProductList = ({ products, title }: ListTypes) => {
           <p className='text-sm'>No products found.</p>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
