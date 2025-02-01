@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import Image from 'next/image';
+
 import {
   TruckIcon,
   HeadsetIcon,
@@ -11,8 +14,6 @@ import { Button } from '../ui/button';
 import { APP_NAME } from '@/constants';
 
 import type { ElementType } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 
 type PolicyProps = {
   icon: ElementType;
@@ -102,14 +103,14 @@ const Subscribe = () => {
             </p>
           </div>
           <div>
-            <div className='flex gap-1.5'>
+            <div className='flex gap-5'>
               <Link href='https://www.apple.com/app-store/' target='_blank'>
                 <Image
                   src='/assets/app-store.png'
                   alt='App Store'
                   width={102}
                   height={33}
-                  className='border rounded-sm px-1.5 py-1 border-gray-500'
+                  className='border rounded-md px-2.5 h-12 object-contain border-gray-400'
                 />
               </Link>
               <Link href='https://play.google.com/store/' target='_blank'>
@@ -118,7 +119,7 @@ const Subscribe = () => {
                   alt='Google Play'
                   width={117}
                   height={33}
-                  className='border rounded-sm px-1.5 py-1 border-gray-500'
+                  className='border rounded-md px-2.5 h-12 object-contain border-gray-400'
                 />
               </Link>
             </div>

@@ -59,7 +59,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
 
 const ProductList = ({ products, title }: ListTypes) => {
   return (
-    <section>
+    <section className='mt-20'>
       <h2 className='h2-bold mb-1 text-center sm:text-start'>{title}</h2>
       <p className='mb-4 text-sm font-light text-center sm:text-start'>
         Shop the latest additions fresh in stock
