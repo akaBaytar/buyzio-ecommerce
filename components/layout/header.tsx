@@ -33,7 +33,7 @@ const Header = async ({ adminLayout = false }: PropType) => {
               alt={`${APP_NAME} Homepage`}
               style={{ height: 'auto', width: 'auto' }}
             />
-            <span className='font-semibold text-xl tracking-wider text-[#F46520] ms-2'>
+            <span className='text-lg tracking-widest text-[#658ca3] ms-1.5'>
               {APP_NAME}
             </span>
           </Link>

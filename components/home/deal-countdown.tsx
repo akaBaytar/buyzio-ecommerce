@@ -9,7 +9,11 @@ import { Loader2Icon } from 'lucide-react';
 
 import { Button } from '../ui/button';
 
-const TARGET_DATE = new Date('2025-03-01T00:00:00');
+const getNextMonthStart = () => {
+  const now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth() + 1, 1);
+};
 
 const calculateTimeRemaining = (target: Date) => {
   const current = new Date();
@@ -24,14 +28,14 @@ const calculateTimeRemaining = (target: Date) => {
 };
 
 const DealCountdown = () => {
+  const [targetDate, setTargetDate] = useState(getNextMonthStart);
   const [time, setTime] = useState<ReturnType<typeof calculateTimeRemaining>>();
 
   useEffect(() => {
-    setTime(calculateTimeRemaining(TARGET_DATE));
+    setTime(calculateTimeRemaining(targetDate));
 
     const timerInterval = setInterval(() => {
-      const newTime = calculateTimeRemaining(TARGET_DATE);
-
+      const newTime = calculateTimeRemaining(targetDate);
       setTime(newTime);
 
       if (
@@ -41,20 +45,12 @@ const DealCountdown = () => {
         newTime.seconds === 0
       ) {
         clearInterval(timerInterval);
+        setTargetDate(getNextMonthStart());
       }
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, []);
-
-  if (
-    time?.days === 0 &&
-    time?.hours === 0 &&
-    time?.minutes === 0 &&
-    time?.seconds === 0
-  ) {
-    return <></>;
-  }
+  }, [targetDate]);
 
   return (
     <section className='grid grid-cols-1 sm:grid-cols-2 gap-10 mt-20'>
@@ -73,7 +69,9 @@ const DealCountdown = () => {
             <StatBox label='Seconds' value={time.seconds} />
           </ul>
         ) : (
-          <Loader2Icon className='size-4 animate-spin' />
+          <div className='h-[104px] w-full flex-center'>
+            <Loader2Icon className='size-10 animate-spin' />
+          </div>
         )}
         <div className='text-center sm:text-start'>
           <Button asChild>
@@ -84,9 +82,9 @@ const DealCountdown = () => {
       <div className='flex justify-center'>
         <Image
           src='/home/deal-countdown.png'
-          alt='a woman hold shopping bags'
-          width={770}
-          height={350}
+          alt='a woman hold red bag'
+          width={1170}
+          height={743}
           className='size-full object-cover rounded-md'
         />
       </div>

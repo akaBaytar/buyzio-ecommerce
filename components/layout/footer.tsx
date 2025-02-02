@@ -58,7 +58,7 @@ const Policy = () => {
 
 const Subscribe = () => {
   return (
-    <div className='bg-black text-gray-50 py-20'>
+    <div className='bg-foreground dark:bg-background text-gray-50 py-20'>
       <div className='wrapper flex flex-col justify-between md:flex-row gap-20'>
         <div className='md:w-1/2 space-y-10'>
           <div>
@@ -141,8 +141,95 @@ const Footer = () => {
     <footer className='border-t border-input'>
       <Policy />
       <Subscribe />
-      <div className='flex-center p-5 text-xs'>
-        Copyright {year} &copy; {APP_NAME}. All right reserved.
+      <div className='wrapper flex items-center justify-between flex-col lg:flex-row gap-10 lg:gap-20 my-10'>
+        <div className='flex-center flex-col gap-5 w-full lg:w-1/2 md:items-start lg:max-w-xs xl:max-w-md'>
+          <div className='flex-start'>
+            <Link href='/' title='Buyzio - Homepage' className='flex-start'>
+              <Image
+                src='/assets/logo.svg'
+                width={48}
+                height={48}
+                priority={true}
+                alt={`${APP_NAME} Homepage`}
+                style={{ height: 'auto', width: 'auto' }}
+              />
+              <span className='text-lg tracking-widest text-[#658ca3] ms-1.5'>
+                {APP_NAME}
+              </span>
+            </Link>
+          </div>
+          <p className='text-xs leading-normal text-pretty text-center md:text-start'>
+            Discover a world of premium products and seamless shopping at
+            Buyzio. From trending items to everyday essentials.
+          </p>
+          <p className='text-xs leading-normal text-pretty text-center md:text-start'>
+            +(90) 555 55 55 — contact@buyzio.com
+          </p>
+        </div>
+        <div className='flex flex-col gap-5 text-center items-center md:flex-row md:w-full md:text-start md:justify-between lg:w-1/2'>
+          <div className='text-xs space-y-1.5'>
+            <h5 className='text-sm font-bold'>Information</h5>
+            <ul className='space-y-1'>
+              <li className='hover:underline cursor-pointer'>About Us</li>
+              <li className='hover:underline cursor-pointer'>Drop Shipping</li>
+              <li className='hover:underline cursor-pointer'>Privacy Policy</li>
+              <li className='hover:underline cursor-pointer'>Returns Policy</li>
+              <li className='hover:underline cursor-pointer'>
+                Shipping Policy
+              </li>
+            </ul>
+          </div>
+          <div className='text-xs space-y-1.5'>
+            <h5 className='text-sm font-bold'>Account</h5>
+            <ul className='space-y-1'>
+              <li className='hover:underline cursor-pointer'>Dashboard</li>
+              <li className='hover:underline cursor-pointer'>My Orders</li>
+              <li className='hover:underline cursor-pointer'>My Wishlist</li>
+              <li className='hover:underline cursor-pointer'>Account Detail</li>
+              <li className='hover:underline cursor-pointer'>
+                Track My Order(s)
+              </li>
+            </ul>
+          </div>
+          <div className='text-xs space-y-1.5'>
+            <h5 className='text-sm font-bold'>Shop</h5>
+            <ul className='space-y-1'>
+              <li className='hover:underline cursor-pointer'>Discount</li>
+              <li className='hover:underline cursor-pointer'>Affiliate</li>
+              <li className='hover:underline cursor-pointer'>Bestsellers</li>
+              <li className='hover:underline cursor-pointer'>Sale Products</li>
+              <li className='hover:underline cursor-pointer'>
+                Latest Products
+              </li>
+            </ul>
+          </div>
+          <div className='text-xs space-y-1.5'>
+            <h5 className='text-sm font-bold'>Categories</h5>
+            <ul className='space-y-1'>
+              <li className='hover:underline cursor-pointer'>Men</li>
+              <li className='hover:underline cursor-pointer'>Bags</li>
+              <li className='hover:underline cursor-pointer'>Shoes</li>
+              <li className='hover:underline cursor-pointer'>Women</li>
+              <li className='hover:underline cursor-pointer'>Outerwear</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className='border-t border-input text-xs'>
+        <div className='wrapper flex flex-col-reverse md:flex-row gap-5 justify-between items-center'>
+          <p>
+            Copyright {year} &copy; {APP_NAME}. All right reserved.
+          </p>
+          <ul className='flex gap-1.5 items-center'>
+            <li className='hover:underline cursor-pointer'>Privacy Policy</li>
+            <li>|</li>
+            <li className='hover:underline cursor-pointer'>
+              Terms and Conditions
+            </li>
+            <li>|</li>
+            <li className='hover:underline cursor-pointer'>Returns Policy</li>
+          </ul>
+        </div>
       </div>
     </footer>
   );

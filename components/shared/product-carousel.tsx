@@ -21,7 +21,7 @@ const ProductCarousel = ({ products }: { products: Product[] }) => {
             stopOnMouseEnter: true,
           }),
         ]}
-        className='w-full'>
+        className='w-full mt-5'>
         <CarouselContent>
           {products.map((product: Product) => (
             <CarouselItem key={product.id}>
@@ -34,8 +34,14 @@ const ProductCarousel = ({ products }: { products: Product[] }) => {
                     width={0}
                     height={0}
                     sizes='100vw'
-                    className='h-auto max-h-[35rem] w-full object-cover border border-input rounded-md bg-muted/20'
+                    className='h-auto min-h-96 w-full object-cover rounded-md'
                   />
+                  <div className='absolute bottom-5 start-5 end-5 lg:start-10 lg:end-10 lg:bottom-10 text-white'>
+                    <h2 className='text-2xl bg-black/30 p-5 rounded-lg leading-normal font-extralight tracking-wide lg:text-4xl lg:leading-relaxed lg:p-10 text-pretty'>
+                      Seasonal Specials
+                      <br /> Hot deals for a limited time!
+                    </h2>
+                  </div>
                 </div>
               </Link>
             </CarouselItem>
